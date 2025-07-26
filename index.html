@@ -633,6 +633,7 @@
     const mobileMoonIcon = document.getElementById('mobile-moon-icon');
     const mobileSunIcon = document.getElementById('mobile-sun-icon');
 
+    // START OF MODIFIED JAVASCRIPT FOR THEME TOGGLE
     function applyTheme(isDark) {
         if (isDark) {
             document.documentElement.classList.add('dark');
@@ -640,26 +641,28 @@
             if (sunIcon) sunIcon.classList.remove('hidden');
             if (mobileMoonIcon) mobileMoonIcon.classList.add('hidden');
             if (mobileSunIcon) mobileSunIcon.classList.remove('hidden');
-            localStorage.setItem('color-theme', 'dark'); // Simpan preferensi di browser
         } else {
             document.documentElement.classList.remove('dark');
             if (moonIcon) moonIcon.classList.remove('hidden');
             if (sunIcon) sunIcon.classList.add('hidden');
             if (mobileMoonIcon) mobileMoonIcon.classList.remove('hidden');
             if (mobileSunIcon) mobileSunIcon.classList.add('hidden');
-            localStorage.setItem('color-theme', 'light'); // Simpan preferensi di browser
         }
     }
 
     // Fungsi untuk menentukan tema awal saat halaman dimuat
     function setInitialTheme() {
-        const savedTheme = localStorage.getItem('color-theme'); // Cek apakah ada tema yang pernah disimpan dari klik tombol
+        const savedTheme = localStorage.getItem('color-theme');
+
         if (savedTheme) {
-            // Jika ada tema yang disimpan (dari tombol), gunakan tema itu
+            // Jika tema tersimpan (dari klik tombol), gunakan tema tersebut
             applyTheme(savedTheme === 'dark');
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // Jika tidak ada tema tersimpan, tetapi sistem lebih suka gelap, terapkan gelap
+            applyTheme(true);
         } else {
-            // Jika belum pernah klik tombol, ikuti preferensi sistem (komputer/hp)
-            applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
+            // Jika tidak, default ke terang
+            applyTheme(false);
         }
     }
 
@@ -667,30 +670,34 @@
     document.addEventListener('DOMContentLoaded', setInitialTheme);
 
     // Bagian PENTING: Mendengarkan perubahan preferensi tema sistem secara real-time
-    // Ini akan membuat website otomatis berubah jika Anda mengganti mode gelap/terang di pengaturan komputer/HP.
+    // Ini akan membuat situs web secara otomatis berubah jika Anda mengganti mode gelap/terang di pengaturan komputer/HP,
+    // HANYA JIKA pengguna belum secara manual memilih tema dengan tombol.
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-        const savedTheme = localStorage.getItem('color-theme'); // Cek lagi preferensi dari tombol
-        // Kita hanya akan mengubah tema secara otomatis jika pengguna belum secara manual memilih tema dengan tombol.
-        // Atau jika tema yang disimpan manual cocok dengan preferensi sistem yang baru.
-        if (!savedTheme || (savedTheme === 'dark' && event.matches) || (savedTheme === 'light' && !event.matches)) {
+        const savedTheme = localStorage.getItem('color-theme');
+        // Hanya terapkan preferensi sistem jika tidak ada tema manual yang disimpan
+        if (!savedTheme) {
             applyTheme(event.matches);
         }
     });
 
-
-    // Toggle button click event (untuk tombol yang Anda klik manual)
+    // Peristiwa klik tombol sakelar (untuk tombol yang Anda klik secara manual)
     if (themeToggle) {
         themeToggle.addEventListener('click', function() {
-            // Ubah tema ke kebalikan dari tema saat ini
-            applyTheme(!document.documentElement.classList.contains('dark'));
+            const isCurrentlyDark = document.documentElement.classList.contains('dark');
+            const newThemeIsDark = !isCurrentlyDark;
+            applyTheme(newThemeIsDark);
+            localStorage.setItem('color-theme', newThemeIsDark ? 'dark' : 'light'); // Simpan preferensi
         });
     }
     if (mobileThemeToggle) {
         mobileThemeToggle.addEventListener('click', function() {
-            // Ubah tema ke kebalikan dari tema saat ini
-            applyTheme(!document.documentElement.classList.contains('dark'));
+            const isCurrentlyDark = document.documentElement.classList.contains('dark');
+            const newThemeIsDark = !isCurrentlyDark;
+            applyTheme(newThemeIsDark);
+            localStorage.setItem('color-theme', newThemeIsDark ? 'dark' : 'light'); // Simpan preferensi
         });
     }
+    // END OF MODIFIED JAVASCRIPT FOR THEME TOGGLE
 
     // Hamburger Menu Toggle
     const mobileMenuButton = document.getElementById('mobile-menu-button');
