@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keamanan Kripto Lanjutan | CryptoSphere</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Space Grotesk', sans-serif; }
+    .gradient-text {
+      background: linear-gradient(90deg, #00f5d4, #7b2cbf, #ff8906);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-x 8s ease infinite;
+    }
+    .dark .gradient-text {
+        background: linear-gradient(90deg, #00f5d4, #7b2cbf, #ff8906);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradient-x 8s ease infinite;
+    }
+    /* Custom scrollbar for better aesthetics */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    .dark::-webkit-scrollbar-track {
+        background: #1e1e2e;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+    .dark::-webkit-scrollbar-thumb {
+        background: #444;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    /* Mobile menu styles */
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: white; /* Sesuaikan dengan warna header */
+        dark:bg-dark; /* Sesuaikan dengan warna header */
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        padding: 1rem 0;
+        border-radius: 0 0 1rem 1rem;
+        z-index: 40; /* Di bawah header tetap */
+    }
+
+    .dark .mobile-menu {
+      background-color: #0f0e17; /* Dark background for dark mode */
+    }
+
+    .mobile-menu.active {
+        display: flex;
+    }
+
+    .mobile-menu a, .mobile-menu button {
+        padding: 0.75rem 1.5rem;
+        text-align: left;
+        color: #0f0e17; /* Text color for light mode */
+        dark:text-light; /* Text color for dark mode */
+    }
+
+    .dark .mobile-menu a, .dark .mobile-menu button {
+      color: #fffffe;
+    }
+
+    .mobile-menu a:hover, .mobile-menu button:hover {
+        background-color: #f0f0f0;
+        dark:bg-card;
+    }
+
+    /* Hamburger icon animation */
+    .mobile-menu-icon {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .mobile-menu-icon .bar {
+      height: 2px;
+      width: 100%;
+      background-color: #0f0e17; /* Warna default bar */
+      dark:background-color: #fffffe; /* Warna bar dalam dark mode */
+      transition: all 0.3s ease;
+      border-radius: 9999px;
+    }
+
+    .dark .mobile-menu-icon .bar {
+      background-color: #fffffe;
+    }
+
+    .mobile-menu-icon.open .bar:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .mobile-menu-icon.open .bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-icon.open .bar:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        fontFamily: {
+          sans: ['Space Grotesk', 'sans-serif'],
+        },
+        extend: {
+          colors: {
+            primary: "#00f5d4",
+            secondary: "#7b2cbf",
+            dark: "#0f0e17",
+            light: "#fffffe",
+            card: "#1e1e2e",
+            accent: "#ff8906"
+          },
+          animation: {
+            'gradient-x': 'gradient-x 8s ease infinite',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            'gradient-x': {
+              '0%, 100%': { 'background-position': '0% 50%' },
+              '50%': { 'background-position': '100% 50%' },
+            },
+            'float': {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-light text-dark dark:bg-dark dark:text-light font-sans scroll-smooth transition-colors duration-300">
+  <div class="fixed inset-0 overflow-hidden -z-10">
+    <div class="absolute top-1/4 left-1/4 w-4 h-4 rounded-full bg-primary opacity-20 animate-float"></div>
+    <div class="absolute top-1/3 right-1/4 w-6 h-6 rounded-full bg-secondary opacity-15 animate-float" style="animation-delay: 1s;"></div>
+    <div class="absolute bottom-1/4 left-1/3 w-8 h-8 rounded-full bg-accent opacity-10 animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-1/3 right-1/3 w-5 h-5 rounded-full bg-primary opacity-15 animate-float" style="animation-delay: 3s;"></div>
+  </div>
+
+  <header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-dark/80 backdrop-blur-md shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center relative">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-primary">
+          <path fill-rule="evenodd" d="M12 21.75c5.385 0 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25 2.25 6.615 2.25 12s4.365 9.75 9.75 9.75zM10.5 7.963a1.5 1.5 0 00-1.5 1.5v5.074a1.5 1.5 0 001.5 1.5h5.074a1.5 1.5 0 001.5-1.5v-5.074a1.5 1.5 0 00-1.5-1.5H10.5z" clip-rule="evenodd" />
+        </svg>
+        <h1 class="text-2xl font-bold gradient-text">CryptoSphere</h1>
+      </div>
+      
+      <nav id="desktop-nav" class="hidden md:flex items-center space-x-8">
+        <a href="index.html#home" class="font-medium hover:text-primary transition-colors">Beranda</a>
+        <a href="index.html#learn" class="font-medium text-primary transition-colors">Belajar</a>
+        <a href="index.html#market" class="font-medium hover:text-primary transition-colors">Market</a>
+        <a href="index.html#tools" class="font-medium hover:text-primary transition-colors">Tools</a>
+        <a href="index.html#community" class="font-medium hover:text-primary transition-colors">Komunitas</a>
+        
+        <button id="theme-toggle" class="p-2 rounded-full bg-white dark:bg-card shadow-md" aria-label="Toggle dark mode">
+          <svg id="moon-icon" class="w-5 h-5 text-dark dark:text-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg id="sun-icon" class="w-5 h-5 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+      </nav>
+      
+      <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-dark dark:text-light mobile-menu-icon" aria-label="Open mobile menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <nav id="mobile-menu" class="mobile-menu">
+        <a href="index.html#home" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Beranda</a>
+        <a href="index.html#learn" class="font-medium text-primary transition-colors py-3 px-6 w-full text-center">Belajar</a>
+        <a href="index.html#market" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Market</a>
+        <a href="index.html#tools" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Tools</a>
+        <a href="index.html#community" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Komunitas</a>
+        <button id="mobile-theme-toggle" class="p-2 mt-4 rounded-full bg-white dark:bg-card shadow-md md:hidden" aria-label="Toggle dark mode">
+          <svg id="mobile-moon-icon" class="w-5 h-5 text-dark dark:text-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg id="mobile-sun-icon" class="w-5 h-5 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-grow py-16 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto pt-16">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <span class="text-primary text-sm font-semibold uppercase tracking-wider mb-2 block">Jalur Menengah</span>
+        <h2 class="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight gradient-text mb-4">
+          Keamanan Kripto Lanjutan
+        </h2>
+        <p class="text-base sm:text-lg md:text-2xl text-gray-600 dark:text-gray-300 mx-auto">
+          Tingkatkan pertahanan aset digital Anda dengan strategi keamanan yang lebih dalam.
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-card rounded-2xl shadow-xl px-4 py-6 sm:p-8 mb-8" data-aos="fade-up" data-aos-delay="100">
+        <h3 class="text-xl sm:text-2xl font-bold text-primary mb-4">Pengantar Keamanan Kripto Lanjutan</h3>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+          Setelah memahami dasar-dasar keamanan kripto seperti penggunaan kata sandi kuat dan 2FA, saatnya melangkah lebih jauh. Pasar kripto yang dinamis juga menarik perhatian para pelaku kejahatan siber yang terus mengembangkan metode penipuan yang semakin canggih. Keamanan kripto lanjutan berfokus pada pemahaman ancaman yang lebih kompleks dan penerapan praktik terbaik untuk menjaga aset digital Anda tetap aman.
+        </p>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+          Ingat, di dunia kripto, Anda adalah bank Anda sendiri. Ini berarti tanggung jawab penuh atas keamanan dana ada di tangan Anda. Mengembangkan mentalitas keamanan dan selalu waspada adalah kunci.
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-card rounded-2xl shadow-xl px-4 py-6 sm:p-8 mb-8" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="text-xl sm:text-2xl font-bold text-secondary mb-4">Memilih dan Mengelola Wallet Kripto dengan Aman</h3>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+          Pilihan wallet sangat memengaruhi tingkat keamanan.
+        </p>
+        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed space-y-2 ml-4">
+          <li>
+            <strong>Hardware Wallets (Cold Storage):</strong>
+            <ul class="list-circle list-inside ml-6 mt-2 space-y-1">
+              <li><strong>Keamanan Tertinggi:</strong> Kunci privat disimpan secara offline, sangat resisten terhadap serangan online (malware, phishing).</li>
+              <li><strong>Contoh:</strong> Ledger, Trezor.</li>
+              <li><strong>Kapan Digunakan:</strong> Ideal untuk penyimpanan jangka panjang atau jumlah kripto yang besar. Tidak nyaman untuk transaksi harian.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Software Wallets (Hot Storage):</strong>
+            <ul class="list-circle list-inside ml-6 mt-2 space-y-1">
+              <li><strong>Tipe:</strong> Desktop wallets (mis. Exodus), Mobile wallets (mis. Trust Wallet, MetaMask), Browser extension wallets (mis. MetaMask, Phantom).</li>
+              <li><strong>Kenyamanan vs. Keamanan:</strong> Lebih nyaman untuk transaksi harian tetapi rentan terhadap risiko online jika perangkat terinfeksi atau tidak aman.</li>
+              <li><strong>Tips:</strong> Hanya unduh dari sumber resmi. Pertimbangkan penggunaan multi-signature untuk dana besar.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Paper Wallets (Tingkat Lanjut/Tidak Direkomendasikan untuk Pemula):</strong>
+            <ul class="list-circle list-inside ml-6 mt-2 space-y-1">
+              <li><strong>Konsep:</strong> Kunci privat dan alamat publik dicetak di kertas.</li>
+              <li><strong>Risiko Tinggi:</strong> Sangat rentan terhadap kerusakan fisik (api, air), kehilangan, dan kesalahan saat membuat atau mengimpor. Umumnya tidak direkomendasikan lagi karena kompleksitas dan risiko.</li>
+            </ul>
+          </li>
+        </ul>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mt-4 font-bold">
+          Selalu Cadangkan Seed Phrase/Recovery Phrase Anda:
+        </p>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mt-2 ml-4">
+          Ini adalah hal terpenting. Seed phrase adalah satu-satunya cara untuk memulihkan dana Anda jika wallet hilang atau rusak.
+        </p>
+        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed space-y-2 ml-6">
+          <li>Tuliskan secara fisik di beberapa tempat yang aman (mis. brankas, di tempat terpisah).</li>
+          <li>JANGAN pernah menyimpannya di perangkat digital (komputer, cloud, email, screenshot).</li>
+          <li>JANGAN pernah membagikannya kepada siapa pun.</li>
+          <li>Pastikan tidak ada orang lain yang melihat Anda saat menuliskannya.</li>
+        </ul>
+      </div>
+
+      <div class="bg-white dark:bg-card rounded-2xl shadow-xl px-4 py-6 sm:p-8 mb-8" data-aos="fade-up" data-aos-delay="300">
+        <h3 class="text-xl sm:text-2xl font-bold text-accent mb-4">Ancaman Lanjutan & Cara Menghindarinya</h3>
+        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed space-y-4 ml-4">
+          <li>
+            <strong>Phishing Lanjutan (Spear Phishing & Whaling):</strong>
+            <ul class="list-circle list-inside ml-6 mt-2 space-y-1">
+              <li><strong>Deskripsi:</strong> Serangan yang sangat ditargetkan, seringkali dengan email atau pesan yang dipersonalisasi yang terlihat sangat asli dari sumber tepercaya (mis. bursa, proyek DeFi).</li>
+              <li><strong>Pencegahan:</strong>
+                <ul class="list-square list-inside ml-6">
+                  <li>Selalu periksa URL situs web secara teliti (satu huruf salah pun berbahaya).</li>
+                  <li>Jangan klik tautan dari email atau DM yang mencurigakan. Ketik URL secara manual.</li>
+                  <li>Verifikasi informasi melalui saluran resmi (situs web resmi, pengumuman di akun media sosial terverifikasi).</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <strong>Malware & Keyloggers:</strong>
+            <ul class="list-circle list-inside ml-6 mt-2 space-y-1">
+              <li><strong>Deskripsi:</strong> Program jahat yang menginfeksi komputer Anda untuk mencuri informasi (kata sandi, seed phrase) atau memodifikasi alamat dompet saat menyalin/menempel.</li>
+              <li><strong>Pencegahan:</strong>
+                <ul class="list-square list-inside ml-6">
+                  <li>Gunakan antivirus/antimalware terkemuka dan selalu perbarui.</li>
+                  <li>Jangan mengunduh software dari sumber tidak terpercaya.</li>
+                  <li>Gunakan sistem operasi dan browser yang up-to-date.</li>
+                  <li>Pertimbangkan untuk menggunakan OS yang terisolasi atau virtual machine untuk transaksi kripto.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <strong>Social Engineering & Impersonation:</strong>
+            <ul class="list-circle list-inside ml-6 mt-2 space-y-1">
+              <li><strong>Deskripsi:</strong> Penipu memanipulasi Anda untuk mengungkapkan informasi sensitif atau melakukan tindakan yang merugikan, seringkali dengan menyamar sebagai dukungan pelanggan, influencer, atau teman.</li>
+              <li><strong>Pencegahan:</strong>
+                <ul class="list-square list-inside ml-6">
+                  <li>Jangan pernah berbagi kunci privat atau seed phrase Anda, tidak peduli apa alasannya.</li>
+                  <li>Bersikap skeptis terhadap tawaran yang terlalu bagus untuk menjadi kenyataan (mis. giveaway kripto palsu).</li>
+                  <li>Verifikasi identitas pihak yang menghubungi Anda melalui saluran resmi.</li>
+                  <li>Berhati-hati dengan "ahli" yang menawarkan untuk "menggandakan" atau "memulihkan" kripto Anda.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <strong>Supply Chain Attacks (Serangan Rantai Pasokan):</strong>
+            <ul class="list-circle list-inside ml-6 mt-2 space-y-1">
+              <li><strong>Deskripsi:</strong> Penyerang menargetkan pemasok atau layanan pihak ketiga yang Anda gunakan (mis. penyedia wallet, bursa, layanan DEX) untuk kemudian mendapatkan akses ke Anda.</li>
+              <li><strong>Pencegahan:</strong>
+                <ul class="list-square list-inside ml-6">
+                  <li>Riset reputasi dan keamanan setiap layanan kripto yang Anda gunakan.</li>
+                  <li>Diversifikasi penyimpanan aset Anda (jangan semua di satu tempat).</li>
+                  <li>Pertimbangkan untuk memantau berita keamanan dari layanan yang Anda gunakan.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-white dark:bg-card rounded-2xl shadow-xl px-4 py-6 sm:p-8 mb-8" data-aos="fade-up" data-aos-delay="400">
+        <h3 class="text-xl sm:text-2xl font-bold text-primary mb-4">Praktik Terbaik Keamanan Tambahan</h3>
+        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed space-y-4 ml-4">
+          <li>
+            <strong>Diversifikasi & Batasi Eksposur:</strong>
+            <ul class="list-circle list-inside ml-6 mt-2 space-y-1">
+              <li>Jangan menyimpan semua aset di satu wallet atau satu bursa.</li>
+              <li>Simpan hanya jumlah yang Anda perlukan untuk trading di bursa. Sisanya di cold storage.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Gunakan Alamat Berbeda:</strong> Gunakan alamat kripto yang berbeda untuk setiap transaksi atau untuk setiap layanan yang berbeda. Ini meningkatkan privasi dan mempersulit pelacakan oleh pihak jahat.
+          </li>
+          <li>
+            <strong>Verifikasi Alamat:</strong> SELALU verifikasi ulang alamat dompet penerima sebelum mengirimkan dana. Banyak malware dapat mengubah alamat yang Anda salin. Lakukan verifikasi dua kali, bahkan tiga kali. Kirim jumlah kecil sebagai tes jika mengirimkan jumlah besar.
+          </li>
+          <li>
+            <strong>Periksa Izin Kontrak Pintar (Smart Contract Approvals):</strong> Saat berinteraksi dengan aplikasi DeFi (DApps), Anda sering diminta untuk memberikan izin kepada kontrak pintar untuk mengakses token di dompet Anda.
+            <ul class="list-circle list-inside ml-6 mt-2 space-y-1">
+              <li>Pahami izin apa yang Anda berikan.</li>
+              <li>Cabut izin yang tidak lagi diperlukan melalui alat seperti Revoke.cash atau Etherscan Token Approvals.</li>
+              <li>Jangan berikan izin "unlimited approval" jika tidak benar-benar diperlukan.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Akses Internet Aman:</strong> Hindari melakukan transaksi kripto di jaringan Wi-Fi publik yang tidak aman. Gunakan VPN (Virtual Private Network) jika Anda harus.
+          </li>
+          <li>
+            <strong>Pembaruan Software:</strong> Pastikan sistem operasi, browser, aplikasi wallet, dan antivirus Anda selalu diperbarui ke versi terbaru untuk mendapatkan patch keamanan terkini.
+          </li>
+          <li>
+            <strong>Edukasi Diri Sendiri:</strong> Dunia kripto terus berkembang. Ikuti berita keamanan, pelajari tentang jenis penipuan baru, dan diskusikan praktik keamanan dengan komunitas tepercaya.
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-white dark:bg-card rounded-2xl shadow-xl px-4 py-6 sm:p-8" data-aos="fade-up" data-aos-delay="500">
+        <h3 class="text-xl sm:text-2xl font-bold text-purple-500 mb-4">Manajemen Risiko Kripto</h3>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+          Keamanan bukan hanya tentang mencegah serangan, tetapi juga tentang meminimalkan kerugian jika hal terburuk terjadi.
+        </p>
+        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed space-y-2 ml-4">
+          <li>
+            <strong>Portofolio yang Terdiversifikasi:</strong> Jangan hanya berinvestasi pada satu aset atau satu platform.
+          </li>
+          <li>
+            <strong>Dana Darurat Terpisah:</strong> Jangan pernah menginvestasikan dana yang Anda tidak mampu kehilangannya. Miliki dana darurat terpisah dari investasi kripto Anda.
+          </li>
+          <li>
+            <strong>Pahami Risiko DeFi:</strong> Interaksi dengan protokol DeFi membawa risiko tambahan seperti bug kontrak pintar, serangan oracle, dan impermanent loss. Pelajari mekanisme di balik protokol yang Anda gunakan.
+          </li>
+          <li>
+            <strong>Bersikap Realistis:</strong> Ingat bahwa pasar kripto sangat spekulatif. Jangan biarkan emosi (ketakutan, keserakahan) mengendalikan keputusan keamanan dan investasi Anda.
+          </li>
+        </ul>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+          Keamanan kripto adalah perjalanan berkelanjutan, bukan tujuan akhir. Dengan terus belajar dan menerapkan praktik terbaik ini, Anda dapat secara signifikan mengurangi risiko kehilangan aset digital Anda.
+        </p>
+      </div>
+
+      <div class="text-center mt-16" data-aos="fade-up" data-aos-delay="600">
+        <a href="menengah.html" class="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-full hover:shadow-lg transition-all transform hover:-translate-y-1">
+          Kembali ke Jalur Menengah
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-dark dark:bg-card py-16 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid md:grid-cols-4 gap-12">
+        <div>
+          <div class="flex items-center space-x-2 mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-primary">
+              <path fill-rule="evenodd" d="M12 21.75c5.385 0 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25 2.25 6.615 2.25 12s4.365 9.75 9.75 9.75zM10.5 7.963a1.5 1.5 0 00-1.5 1.5v5.074a1.5 1.5 0 001.5 1.5h5.074a1.5 1.5 0 001.5-1.5v-5.074a1.5 1.5 0 00-1.5-1.5H10.5z" clip-rule="evenodd" />
+            </svg>
+            <h2 class="text-2xl font-bold text-white">CryptoSphere</h2>
+          </div>
+          <p class="text-gray-400 mb-6">
+            Platform edukasi cryptocurrency terkemuka di Indonesia.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="Twitter">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 01-1.93.07 4.28 4.28 0 004 2.98 8.521 8.521 0 01-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="Instagram">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="LinkedIn">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Edukasi</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Pemula</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Analisis Teknikal</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Analisis Fundamental</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">DeFi</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">NFT</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Tools</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kalkulator Profit</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Portfolio Tracker</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Gas Fee Tracker</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Market Cap Calculator</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Perusahaan</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Tentang Kami</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Karir</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kebijakan Privasi</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Syarat & Ketentuan</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kontak</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+        <p class="text-gray-500">© 2025 CryptoSphere. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true,
+      easing: 'ease-in-out',
+      offset: 100,
+    });
+
+    // Dark Mode Toggle (Desktop)
+    const themeToggle = document.getElementById('theme-toggle');
+    const moonIcon = document.getElementById('moon-icon');
+    const sunIcon = document.getElementById('sun-icon');
+
+    // Dark Mode Toggle (Mobile)
+    const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+    const mobileMoonIcon = document.getElementById('mobile-moon-icon');
+    const mobileSunIcon = document.getElementById('mobile-sun-icon');
+
+    function applyTheme(isDark) {
+        if (isDark) {
+            document.documentElement.classList.add('dark');
+            if (moonIcon) moonIcon.classList.add('hidden');
+            if (sunIcon) sunIcon.classList.remove('hidden');
+            if (mobileMoonIcon) mobileMoonIcon.classList.add('hidden');
+            if (mobileSunIcon) mobileSunIcon.classList.remove('hidden');
+            localStorage.setItem('color-theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            if (moonIcon) moonIcon.classList.remove('hidden');
+            if (sunIcon) sunIcon.classList.add('hidden');
+            if (mobileMoonIcon) mobileMoonIcon.classList.remove('hidden');
+            if (mobileSunIcon) mobileSunIcon.classList.add('hidden');
+            localStorage.setItem('color-theme', 'light');
+        }
+    }
+
+    // Cek preferensi tema saat memuat halaman
+    const savedTheme = localStorage.getItem('color-theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        applyTheme(true);
+    } else {
+        applyTheme(false);
+    }
+
+    // Toggle button click event
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            applyTheme(!document.documentElement.classList.contains('dark'));
+        });
+    }
+    if (mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', function() {
+            applyTheme(!document.documentElement.classList.contains('dark'));
+        });
+    }
+
+    // Hamburger Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenuButton.classList.toggle('open'); // Untuk animasi icon
+            mobileMenu.classList.toggle('active'); // Untuk menampilkan/menyembunyikan menu
+        });
+
+        // Menutup menu mobile saat link diklik (opsional, tapi disarankan)
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuButton.classList.remove('open');
+                mobileMenu.classList.remove('active');
+            });
+        });
+    }
+
+  </script>
+</body>
+</html>
