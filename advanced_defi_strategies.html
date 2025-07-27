@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strategi DeFi Tingkat Lanjut | CryptoSphere</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Space Grotesk', sans-serif; }
+    .gradient-text {
+      background: linear-gradient(90deg, #00f5d4, #7b2cbf, #ff8906);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-x 8s ease infinite;
+    }
+    .dark .gradient-text {
+        background: linear-gradient(90deg, #00f5d4, #7b2cbf, #ff8906);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradient-x 8s ease infinite;
+    }
+    .lesson-card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .lesson-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    .dark .lesson-card:hover {
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+    .lesson-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--card-gradient-start), var(--card-gradient-end));
+    }
+    /* Dynamic gradient colors for cards based on theme */
+    .light {
+        --card-gradient-start: #00f5d4;
+        --card-gradient-end: #7b2cbf;
+    }
+    .dark {
+        --card-gradient-start: #00f5d4;
+        --card-gradient-end: #7b2cbf;
+    }
+
+    /* Custom scrollbar for better aesthetics */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    .dark::-webkit-scrollbar-track {
+        background: #1e1e2e;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+    .dark::-webkit-scrollbar-thumb {
+        background: #444;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    /* Mobile menu styles */
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: white; /* Sesuaikan dengan warna header */
+        /* dark:bg-dark; */ /* Sesuaikan dengan warna header */
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        padding: 1rem 0;
+        border-radius: 0 0 1rem 1rem;
+        z-index: 40; /* Di bawah header tetap */
+    }
+
+    .dark .mobile-menu {
+      background-color: #0f0e17; /* Dark background for dark mode */
+    }
+
+    .mobile-menu.active {
+        display: flex;
+    }
+
+    .mobile-menu a, .mobile-menu button {
+        padding: 0.75rem 1.5rem;
+        text-align: left;
+        color: #0f0e17; /* Text color for light mode */
+        /* dark:text-light; */ /* Text color for dark mode */
+    }
+
+    .dark .mobile-menu a, .dark .mobile-menu button {
+      color: #fffffe;
+    }
+
+    .mobile-menu a:hover, .mobile-menu button:hover {
+        background-color: #f0f0f0;
+        /* dark:bg-card; */
+    }
+
+    .dark .mobile-menu a:hover, .dark .mobile-menu button:hover {
+        background-color: #1e1e2e;
+    }
+
+
+    /* Hamburger icon animation */
+    .mobile-menu-icon {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .mobile-menu-icon .bar {
+      height: 2px;
+      width: 100%;
+      background-color: #0f0e17; /* Warna default bar */
+      /* dark:background-color: #fffffe; */ /* Warna bar dalam dark mode */
+      transition: all 0.3s ease;
+      border-radius: 9999px;
+    }
+
+    .dark .mobile-menu-icon .bar {
+      background-color: #fffffe;
+    }
+
+    .mobile-menu-icon.open .bar:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .mobile-menu-icon.open .bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-icon.open .bar:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Specific styles for module content */
+    .content-section {
+      padding: 2rem;
+      background-color: var(--content-bg-light);
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+    .dark .content-section {
+      background-color: var(--content-bg-dark);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Variables for content section backgrounds */
+    .light {
+        --content-bg-light: #ffffff;
+    }
+    .dark {
+        --content-bg-dark: #1e1e2e;
+    }
+
+    .example-box {
+      background-color: #f8f8f8;
+      border-left: 4px solid #00f5d4;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .dark .example-box {
+      background-color: #2a2a3e;
+      border-left-color: #00f5d4;
+      color: #e0e0e0;
+    }
+
+    .example-box strong {
+        color: #0f0e17; /* Light mode */
+    }
+    .dark .example-box strong {
+        color: #fffffe; /* Dark mode */
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        fontFamily: {
+          sans: ['Space Grotesk', 'sans-serif'],
+        },
+        extend: {
+          colors: {
+            primary: "#00f5d4",
+            secondary: "#7b2cbf",
+            dark: "#0f0e17",
+            light: "#fffffe",
+            card: "#1e1e2e",
+            accent: "#ff8906"
+          },
+          animation: {
+            'gradient-x': 'gradient-x 8s ease infinite',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            'gradient-x': {
+              '0%, 100%': { 'background-position': '0% 50%' },
+              '50%': { 'background-position': '100% 50%' },
+            },
+            'float': {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-light text-dark dark:bg-dark dark:text-light font-sans scroll-smooth transition-colors duration-300">
+  <div class="fixed inset-0 overflow-hidden -z-10">
+    <div class="absolute top-1/4 left-1/4 w-4 h-4 rounded-full bg-primary opacity-20 animate-float"></div>
+    <div class="absolute top-1/3 right-1/4 w-6 h-6 rounded-full bg-secondary opacity-15 animate-float" style="animation-delay: 1s;"></div>
+    <div class="absolute bottom-1/4 left-1/3 w-8 h-8 rounded-full bg-accent opacity-10 animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-1/3 right-1/3 w-5 h-5 rounded-full bg-primary opacity-15 animate-float" style="animation-delay: 3s;"></div>
+  </div>
+
+  <header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-dark/80 backdrop-blur-md shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center relative">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-primary">
+          <path fill-rule="evenodd" d="M12 21.75c5.385 0 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25 2.25 6.615 2.25 12s4.365 9.75 9.75 9.75zM10.5 7.963a1.5 1.5 0 00-1.5 1.5v5.074a1.5 1.5 0 001.5 1.5h5.074a1.5 1.5 0 001.5-1.5v-5.074a1.5 1.5 0 00-1.5-1.5H10.5z" clip-rule="evenodd" />
+        </svg>
+        <h1 class="text-2xl font-bold gradient-text">CryptoSphere</h1>
+      </div>
+      
+      <nav id="desktop-nav" class="hidden md:flex items-center space-x-8">
+        <a href="index.html#home" class="font-medium hover:text-primary transition-colors">Beranda</a>
+        <a href="index.html#learn" class="font-medium text-primary transition-colors">Belajar</a>
+        <a href="index.html#market" class="font-medium hover:text-primary transition-colors">Market</a>
+        <a href="index.html#tools" class="font-medium hover:text-primary transition-colors">Tools</a>
+        <a href="index.html#community" class="font-medium hover:text-primary transition-colors">Komunitas</a>
+        
+        <button id="theme-toggle" class="p-2 rounded-full bg-white dark:bg-card shadow-md" aria-label="Toggle dark mode">
+          <svg id="moon-icon" class="w-5 h-5 text-dark dark:text-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg id="sun-icon" class="w-5 h-5 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+      </nav>
+      
+      <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-dark dark:text-light mobile-menu-icon" aria-label="Open mobile menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <nav id="mobile-menu" class="mobile-menu">
+        <a href="index.html#home" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Beranda</a>
+        <a href="index.html#learn" class="font-medium text-primary transition-colors py-3 px-6 w-full text-center">Belajar</a>
+        <a href="index.html#market" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Market</a>
+        <a href="index.html#tools" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Tools</a>
+        <a href="index.html#community" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Komunitas</a>
+        <button id="mobile-theme-toggle" class="p-2 mt-4 rounded-full bg-white dark:bg-card shadow-md md:hidden" aria-label="Toggle dark mode">
+          <svg id="mobile-moon-icon" class="w-5 h-5 text-dark dark:text-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg id="mobile-sun-icon" class="w-5 h-5 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-grow py-16 px-6">
+    <div class="max-w-7xl mx-auto pt-16">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <span class="text-primary text-sm font-semibold uppercase tracking-wider mb-2 block">Jalur Mahir · Modul 2</span>
+        <h2 class="text-5xl md:text-6xl font-bold leading-tight gradient-text mb-4">
+          Strategi DeFi Tingkat Lanjut
+        </h2>
+        <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          Mengoptimalkan keuntungan dan mengelola risiko di ekosistem keuangan terdesentralisasi yang dinamis.
+        </p>
+      </div>
+
+      <div class="content-section" data-aos="fade-up" data-aos-delay="100">
+        <h3 class="text-3xl font-bold text-primary mb-4">Pengantar Strategi DeFi Tingkat Lanjut</h3>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+          DeFi menawarkan peluang yang luas untuk menghasilkan yield dan berpartisipasi dalam inovasi finansial. Namun, untuk benar-benar mengoptimalkan potensi ini, dibutuhkan pemahaman yang lebih dari sekadar staking atau lending dasar. Strategi tingkat lanjut melibatkan komposisi atau penggabungan beberapa protokol untuk menciptakan posisi yang lebih kompleks dan berpotensi lebih menguntungkan.
+        </p>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+          Strategi-strategi ini bertujuan untuk meningkatkan efisiensi modal, memanfaatkan perbedaan yield, atau bahkan melakukan arbitrase lintas protokol. Namun, dengan potensi keuntungan yang lebih tinggi, datang pula risiko yang lebih besar. Oleh karena itu, pemahaman mendalam tentang mekanisme, risiko, dan alat yang digunakan sangatlah krusial.
+        </p>
+        <div class="example-box">
+            <p><strong>Metafora DeFi:</strong> Bayangkan DeFi sebagai set Lego finansial. Strategi tingkat lanjut adalah bagaimana Anda menggabungkan berbagai balok Lego (protokol seperti Aave, Uniswap, Compound) untuk membangun struktur yang canggih (strategi yield farming kompleks, leverage trading, dll.) daripada hanya menumpuknya satu per satu.</p>
+        </div>
+      </div>
+
+      <div class="content-section" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="text-3xl font-bold text-primary mb-4">Strategi Kunci dan Mekanisme</h3>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+          Berikut adalah beberapa strategi DeFi tingkat lanjut yang populer:
+        </p>
+
+        <ul class="list-disc list-inside text-lg text-gray-700 dark:text-gray-300 mb-6 space-y-4">
+          <li>
+            <strong>Yield Farming Lanjutan:</strong>
+            <p class="ml-4 text-base">Membangun di atas konsep yield farming dasar, strategi ini melibatkan pencarian farm dengan APY tertinggi, seringkali melalui:
+              <ul class="list-disc list-inside text-base ml-8">
+                <li><strong>Leveraged Farming:</strong> Meminjam aset dari protokol lending (misalnya Aave, Compound) untuk meningkatkan ukuran posisi di farm. Ini meningkatkan potensi keuntungan tetapi juga risiko likuidasi.</li>
+                <li><strong>Curve Wars & Convex Finance:</strong> Memanfaatkan insentif pada protokol Curve Finance (Stablecoin Automated Market Maker) dan lapisan di atasnya seperti Convex Finance untuk mendapatkan APY yang lebih tinggi pada stablecoin atau pegged assets. Ini melibatkan locking CRV atau CVX untuk boost imbalan.</li>
+                <li><strong>Strategi pada Protokol Agregator:</strong> Menggunakan protokol seperti Yearn.finance atau Beefy Finance yang secara otomatis mencari yield terbaik dan mengkompound keuntungan untuk pengguna, menghemat biaya gas dan waktu.</li>
+              </ul>
+            </p>
+            <div class="example-box">
+                <p><strong>Contoh: Leverage Farming WETH/USDC:</strong></p>
+                <p>1. Deposit WETH ke Aave sebagai jaminan.</p>
+                <p>2. Pinjam USDC dari Aave menggunakan WETH sebagai jaminan.</p>
+                <p>3. Tambahkan WETH dan USDC ke liquidity pool di Uniswap V3 untuk mendapatkan biaya perdagangan dan imbalan dari penyediaan likuiditas.</p>
+                <p>4. Imbalan yang didapat (jika cukup tinggi) digunakan untuk membayar bunga pinjaman dan menghasilkan keuntungan bersih. **Risiko:** Harga WETH turun drastis, menyebabkan likuidasi posisi Aave Anda.</p>
+            </div>
+          </li>
+          <li>
+            <strong>Delta-Neutral Farming:</strong>
+            <p class="ml-4 text-base">Strategi yang bertujuan untuk menghilangkan atau mengurangi paparan terhadap fluktuasi harga aset dasar (misalnya, Bitcoin atau Ethereum) sambil tetap mendapatkan yield dari farming. Ini sering dicapai dengan mengambil posisi short yang sepadan dengan posisi long Anda di farm.</p>
+            <ul class="list-disc list-inside text-base ml-8">
+                <li>Digunakan untuk menghindari impermanent loss atau sekadar mengurangi risiko arah harga.</li>
+                <li>Melibatkan penggunaan perpetual futures, opsi, atau protokol lending/borrowing yang kompleks.</li>
+            </ul>
+            <div class="example-box">
+                <p><strong>Contoh: Delta-Neutral Farming dengan ETH:</strong></p>
+                <p>1. Deposit ETH dan stablecoin ke liquidity pool ETH/Stablecoin untuk yield farming.</p>
+                <p>2. Secara bersamaan, buka posisi short ETH di bursa derivatif (misalnya dYdX atau GMX) dengan jumlah yang setara dengan paparan ETH Anda di liquidity pool.</p>
+                <p>3. Jika harga ETH naik, keuntungan dari liquidity pool diimbangi oleh kerugian dari posisi short. Jika harga ETH turun, kerugian dari liquidity pool diimbangi oleh keuntungan dari posisi short. Anda tetap mendapatkan yield dari farming tanpa terlalu khawatir tentang pergerakan harga ETH.</p>
+            </div>
+          </li>
+          <li>
+            <strong>Looping / Rekursif Lending:</strong>
+            <p class="ml-4 text-base">Proses berulang di mana Anda menyetor aset sebagai jaminan, meminjam aset lain, lalu menyetor kembali aset yang dipinjam sebagai jaminan untuk meminjam lebih banyak, dan seterusnya. Ini meningkatkan eksposur Anda terhadap aset yang ingin Anda long (atau short) dan potensi yield, tetapi juga secara eksponensial meningkatkan risiko likuidasi.</p>
+            <div class="example-box">
+                <p><strong>Contoh: Recursive Lending USDC:</strong></p>
+                <p>1. Deposit 1000 USDC ke Compound.</p>
+                <p>2. Pinjam 800 USDC dari Compound (menggunakan 1000 USDC sebagai jaminan).</p>
+                <p>3. Deposit kembali 800 USDC yang dipinjam ke Compound.</p>
+                <p>4. Pinjam 640 USDC lagi, dst.</p>
+                <p>Ini meningkatkan total USDC yang Anda miliki di Compound (dan mendapatkan bunga), tetapi juga meningkatkan jumlah pinjaman dan risiko likuidasi jika suku bunga pinjaman tiba-tiba naik atau jika ada masalah dengan protokol.</p>
+            </div>
+          </li>
+          <li>
+            <strong>Strategi "Bonding" dan "Staking 2.0" (Misalnya OlympusDAO, KlimaDAO):</strong>
+            <p class="ml-4 text-base">Model baru yang bertujuan untuk mengakumulasi aset yang didukung oleh treasury protokol. Pengguna menjual aset (misalnya LP tokens atau stablecoin) ke protokol dengan diskon (bonding) untuk mendapatkan token asli protokol (misalnya OHM) yang kemudian dapat di-stake untuk APY yang sangat tinggi. Fokusnya adalah pada pertumbuhan treasury dan nilai intrinsik token.</p>
+            <ul class="list-disc list-inside text-base ml-8">
+                <li>Sangat berisiko karena APY tinggi seringkali tidak berkelanjutan dan nilai token sangat fluktuatif.</li>
+                <li>Membutuhkan pemahaman mendalam tentang ekonomi token dan risiko sistematis.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Arbitrase Likuiditas (DEX Arbitrage):</strong>
+            <p class="ml-4 text-base">Memanfaatkan perbedaan harga aset yang sama di berbagai decentralized exchange (DEX). Misalnya, membeli suatu token di Uniswap dengan harga lebih rendah dan menjualnya segera di Sushiswap dengan harga lebih tinggi untuk mendapatkan keuntungan. Ini sering membutuhkan bot dan kecepatan eksekusi yang tinggi.</p>
+            <ul class="list-disc list-inside text-base ml-8">
+                <li>Sangat kompetitif dan membutuhkan keahlian teknis.</li>
+                <li>Risiko slippage dan biaya gas yang tinggi.</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="content-section" data-aos="fade-up" data-aos-delay="300">
+        <h3 class="text-3xl font-bold text-primary mb-4">Manajemen Risiko Tingkat Lanjut di DeFi</h3>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+          Dengan strategi yang lebih kompleks, risiko juga meningkat secara signifikan. Manajemen risiko yang proaktif sangatlah penting:
+        </p>
+        <ul class="list-disc list-inside text-lg text-gray-700 dark:text-gray-300 mb-6 space-y-2">
+          <li>
+            <strong>Risiko Likuidasi:</strong>
+            <p class="ml-4 text-base">Risiko terbesar dalam strategi yang melibatkan pinjaman. Jika nilai jaminan Anda turun di bawah ambang batas tertentu atau nilai pinjaman Anda naik, posisi Anda dapat dilikuidasi, seringkali dengan penalti yang signifikan. Pantau rasio kesehatan (health factor) Anda terus-menerus.</p>
+            <div class="example-box">
+                <p><strong>Tips:</strong> Gunakan alat notifikasi seperti DeFi Saver atau Furocombo yang dapat mengirim peringatan atau bahkan secara otomatis mengelola posisi Anda untuk mencegah likuidasi.</p>
+            </div>
+          </li>
+          <li>
+            <strong>Risiko Kontrak Cerdas (Smart Contract Risk):</strong>
+            <p class="ml-4 text-base">Bug atau kerentanan dalam kode kontrak cerdas dapat menyebabkan kehilangan dana. Pilih protokol yang telah diaudit secara menyeluruh oleh perusahaan keamanan terkemuka dan memiliki rekam jejak yang terbukti.</p>
+          </li>
+          <li>
+            <strong>Risiko Oracle:</strong>
+            <p class="ml-4 text-base">Jika oracle (penyedia data harga) gagal atau dimanipulasi, itu bisa memicu likuidasi yang tidak adil atau eksploitasi lainnya.</p>
+          </li>
+          <li>
+            <strong>Risiko Impermanent Loss (IL):</strong>
+            <p class="ml-4 text-base">Terjadi pada penyedia likuiditas di AMM. Semakin besar perbedaan harga antara dua aset dalam pool, semakin besar IL. Meskipun sering disebut "impermanent", kerugian ini bisa menjadi permanen jika harga tidak kembali.</p>
+            <div class="example-box">
+                <p><strong>Mitigasi IL:</strong> Pilih liquidity pool dengan aset yang relatif stabil satu sama lain (misalnya, stablecoin pair seperti USDC/DAI) atau gunakan strategi delta-neutral.</p>
+            </div>
+          </li>
+          <li>
+            <strong>Risiko Regulasi:</strong>
+            <p class="ml-4 text-base">Perubahan regulasi di yurisdiksi Anda atau di yurisdiksi protokol dapat memengaruhi aksesibilitas atau legalitas strategi tertentu.</p>
+          </li>
+          <li>
+            <strong>Risiko Tim dan Tata Kelola:</strong>
+            <p class="ml-4 text-base">Evaluasi tim di balik protokol dan model tata kelola mereka. Apakah ada *multisig*? Apakah ada mekanisme peningkatan yang transparan?</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="content-section" data-aos="fade-up" data-aos-delay="400">
+        <h3 class="text-3xl font-bold text-primary mb-4">Alat Penting untuk Strategi Tingkat Lanjut</h3>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+          Untuk melaksanakan dan memantau strategi DeFi tingkat lanjut, Anda akan membutuhkan alat yang tepat:
+        </p>
+        <ul class="list-disc list-inside text-lg text-gray-700 dark:text-gray-300 mb-6 space-y-2">
+          <li><strong>Aggregator Yield (Yearn.finance, Beefy Finance, Convex Finance):</strong> Untuk mengotomatiskan dan mengoptimalkan yield farming.</li>
+          <li><strong>Platform Manajemen Portofolio (Debank, Zerion, Zapper):</strong> Untuk memantau semua posisi DeFi Anda di berbagai protokol dan rantai. Sangat penting untuk melacak rasio kesehatan pinjaman Anda.</li>
+          <li><strong>Protokol Otomatisasi (DeFi Saver, Furocombo):</strong> Untuk mengatur *stop-loss* otomatis, *leverage* otomatis, atau bahkan *flash loan* untuk likuidasi atau migrasi posisi.</li>
+          <li><strong>Analisis Data (Dune Analytics, Nansen):</strong> Untuk menganalisis tren makro, aliran dana, dan perilaku "smart money" di DeFi.</li>
+          <li><strong>Alat Harga Gas (GasNow, Etherscan Gas Tracker):</strong> Untuk meminimalkan biaya transaksi, terutama saat melakukan banyak interaksi protokol.</li>
+        </ul>
+      </div>
+
+      <div class="text-center mt-16" data-aos="fade-up" data-aos-delay="500">
+        <h3 class="text-3xl font-bold mb-4">Selami Dunia DeFi yang Lebih Dalam!</h3>
+        <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          Strategi DeFi tingkat lanjut menawarkan potensi keuntungan yang menarik, tetapi selalu datang dengan risiko yang lebih tinggi. Pendidikan berkelanjutan, riset mendalam, dan manajemen risiko yang ketat adalah kunci kesuksesan Anda.
+        </p>
+        <a href="mahir.html" class="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-full hover:shadow-lg transition-all transform hover:-translate-y-1">
+          Kembali ke Jalur Mahir
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-dark dark:bg-card py-16 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid md:grid-cols-4 gap-12">
+        <div>
+          <div class="flex items-center space-x-2 mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-primary">
+              <path fill-rule="evenodd" d="M12 21.75c5.385 0 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25 2.25 6.615 2.25 12s4.365 9.75 9.75 9.75zM10.5 7.963a1.5 1.5 0 00-1.5 1.5v5.074a1.5 1.5 0 001.5 1.5h5.074a1.5 1.5 0 001.5-1.5v-5.074a1.5 1.5 0 00-1.5-1.5H10.5z" clip-rule="evenodd" />
+            </svg>
+            <h2 class="text-2xl font-bold text-white">CryptoSphere</h2>
+          </div>
+          <p class="text-gray-400 mb-6">
+            Platform edukasi cryptocurrency terkemuka di Indonesia.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="Twitter">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 01-1.93.07 4.28 4.28 0 004 2.98 8.521 8.521 0 01-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="Instagram">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="LinkedIn">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Edukasi</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Pemula</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Analisis Teknikal</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Analisis Fundamental</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">DeFi</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">NFT</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Tools</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kalkulator Profit</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Portfolio Tracker</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Gas Fee Tracker</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Market Cap Calculator</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Perusahaan</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Tentang Kami</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Karir</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kebijakan Privasi</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Syarat & Ketentuan</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kontak</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+        <p class="text-gray-500">© 2025 CryptoSphere. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true,
+      easing: 'ease-in-out',
+      offset: 100,
+    });
+
+    // Dark Mode Toggle (Desktop)
+    const themeToggle = document.getElementById('theme-toggle');
+    const moonIcon = document.getElementById('moon-icon');
+    const sunIcon = document.getElementById('sun-icon');
+
+    // Dark Mode Toggle (Mobile)
+    const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+    const mobileMoonIcon = document.getElementById('mobile-moon-icon');
+    const mobileSunIcon = document.getElementById('mobile-sun-icon');
+
+    function applyTheme(isDark) {
+        if (isDark) {
+            document.documentElement.classList.add('dark');
+            if (moonIcon) moonIcon.classList.add('hidden');
+            if (sunIcon) sunIcon.classList.remove('hidden');
+            if (mobileMoonIcon) mobileMoonIcon.classList.add('hidden');
+            if (mobileSunIcon) mobileSunIcon.classList.remove('hidden');
+            localStorage.setItem('color-theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            if (moonIcon) moonIcon.classList.remove('hidden');
+            if (sunIcon) sunIcon.classList.add('hidden');
+            if (mobileMoonIcon) mobileMoonIcon.classList.remove('hidden');
+            if (mobileSunIcon) mobileSunIcon.classList.add('hidden');
+            localStorage.setItem('color-theme', 'light');
+        }
+    }
+
+    // Cek preferensi tema saat memuat halaman
+    const savedTheme = localStorage.getItem('color-theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        applyTheme(true);
+    } else {
+        applyTheme(false);
+    }
+
+    // Toggle button click event
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            applyTheme(!document.documentElement.classList.contains('dark'));
+        });
+    }
+    if (mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', function() {
+            applyTheme(!document.documentElement.classList.contains('dark'));
+        });
+    }
+
+    // Hamburger Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenuButton.classList.toggle('open'); // Untuk animasi icon
+            mobileMenu.classList.toggle('active'); // Untuk menampilkan/menyembunyikan menu
+        });
+
+        // Menutup menu mobile saat link diklik (opsional, tapi disarankan)
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuButton.classList.remove('open');
+                mobileMenu.classList.remove('active');
+            });
+        });
+    }
+  </script>
+</body>
+</html>
