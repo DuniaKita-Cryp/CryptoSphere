@@ -1,0 +1,126 @@
+// server.js
+
+// 1. Mengimpor (memuat) library yang dibutuhkan
+// 'express' adalah framework web untuk membuat server HTTP.
+const express = require('express');
+// 'node-fetch' memungkinkan server Anda membuat permintaan HTTP ke API lain (misalnya CoinGecko).
+const fetch = require('node-fetch');
+// 'cors' adalah middleware yang mengatasi masalah Cross-Origin Resource Sharing (CORS),
+// yang memungkinkan frontend Anda di domain berbeda untuk mengakses backend ini.
+const cors = require('cors');
+
+// 2. Inisialisasi aplikasi Express (server web Anda)
+const app = express();
+// Menentukan PORT (gerbang komunikasi) untuk server.
+// 'process.env.PORT' akan digunakan jika server di-deploy (misalnya di Vercel),
+// jika tidak ada (saat diuji lokal), port 3000 akan digunakan.
+const PORT = process.env.PORT || 3000;
+
+// 3. Konfigurasi CORS untuk mengizinkan permintaan dari frontend Anda
+// 'origin: "*"' mengizinkan permintaan dari domain manapun.
+// Untuk produksi, sangat disarankan untuk mengganti "*" dengan domain spesifik frontend Anda
+// (misalnya, 'https://akita-cryp.github.io').
+app.use(cors({
+    origin: '*',
+    methods: ['GET'], // Hanya izinkan metode HTTP GET
+    allowedHeaders: ['Content-Type'], // Hanya izinkan header Content-Type
+}));
+
+// 4. Variabel untuk Caching Data Aset Kripto
+// 'cachedCryptoData' akan menyimpan data koin yang terakhir berhasil diambil dari CoinGecko.
+let cachedCryptoData = null;
+// 'cacheTimestamp' akan menyimpan waktu (dalam milidetik) ketika 'cachedCryptoData' terakhir diperbarui.
+let cacheTimestamp = 0;
+// 'CACHE_DURATION' adalah durasi (dalam milidetik) data dianggap "segar" dalam cache.
+// Dalam contoh ini, data akan di-cache selama 5 menit (5 * 60 detik * 1000 milidetik/detik).
+// Durasi ini bisa diubah jika CoinGecko API sering memunculkan rate limit.
+const CACHE_DURATION = 5 * 60 * 1000; // 5 menit
+
+// 5. Membuat Endpoint API untuk Frontend Anda
+// Ini adalah URL yang akan diakses oleh frontend Anda (misalnya, /api/crypto-assets).
+app.get('/api/crypto-assets', async (req, res) => {
+    const now = Date.now(); // Dapatkan waktu saat ini dalam milidetik
+
+    // Pertama, periksa apakah data sudah ada di cache dan masih "segar" (belum kadaluarsa).
+    if (cachedCryptoData && (now - cacheTimestamp < CACHE_DURATION)) {
+        console.log('Serving crypto data from cache...');
+        // Jika data segar, langsung kirim data dari cache ke frontend.
+        return res.status(200).json(cachedCryptoData);
+    }
+
+    // Jika cache kosong atau sudah kadaluarsa, ambil data baru dari CoinGecko API.
+    console.log('Fetching fresh crypto data from CoinGecko API...');
+    try {
+        const currency = 'usd'; // Mata uang dasar untuk data harga
+        const perPage = 250;    // Jumlah aset kripto per halaman yang diminta dari CoinGecko
+        let allData = [];       // Array untuk menyimpan semua data aset dari berbagai halaman
+        let page = 1;           // Halaman awal untuk permintaan API
+        let hasMore = true;     // Flag untuk mengecek apakah masih ada halaman yang harus diambil
+        const maxPagesToFetch = 5; // Batasi maksimal 5 halaman (total 5 * 250 = 1250 koin)
+
+        // Loop untuk mengambil data dari beberapa halaman CoinGecko API
+        while (hasMore && page <= maxPagesToFetch) {
+            // Bangun URL permintaan ke CoinGecko API
+            const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=${perPage}&page=${page}&sparkline=true&price_change_percentage=24h,7d,30d`;
+            
+            // Lakukan permintaan HTTP ke CoinGecko API
+            const response = await fetch(url);
+
+            // Periksa apakah respons dari CoinGecko berhasil (status code 2xx)
+            if (!response.ok) {
+                // Jika CoinGecko mengembalikan status 429 (Too Many Requests / Rate Limit)
+                // DAN kita memiliki data di cache, sajikan data cache lama.
+                if (response.status === 429 && cachedCryptoData) {
+                    console.warn("CoinGecko API rate limit hit. Serving stale cached data.");
+                    // Kirim status 200 OK ke frontend meskipun data dari cache lama,
+                    // agar frontend tidak menampilkan pesan error keras.
+                    return res.status(200).json(cachedCryptoData); 
+                }
+                // Jika ada error lain atau tidak ada data di cache, lemparkan error.
+                const errorText = await response.text(); // Coba ambil detail error dari respons
+                throw new Error(`Failed to fetch from CoinGecko API: ${response.status} ${response.statusText}. Detail: ${errorText}`);
+            }
+
+            // Parse respons dari CoinGecko sebagai JSON
+            const data = await response.json();
+
+            // Jika ada data yang diterima, tambahkan ke array 'allData' dan lanjutkan ke halaman berikutnya.
+            if (data.length > 0) {
+                allData = allData.concat(data);
+                page++;
+            } else {
+                // Jika tidak ada data lagi, hentikan loop.
+                hasMore = false;
+            }
+        }
+
+        // Setelah berhasil mengambil semua data dari CoinGecko (atau jika ada error 429 dan disajikan cache lama),
+        // simpan data yang baru diambil ke dalam cache.
+        cachedCryptoData = allData;
+        cacheTimestamp = now;
+        console.log('Successfully fetched and cached new crypto data.');
+        // Kirim data yang baru dan segar ini ke frontend.
+        res.status(200).json(allData);
+
+    } catch (error) {
+        // Tangani error yang terjadi selama proses fetching data dari CoinGecko.
+        console.error('Error in /api/crypto-assets:', error.message);
+        
+        // Jika terjadi error saat fetching data baru DAN ada data di cache, sajikan cache lama.
+        if (cachedCryptoData) {
+            console.warn('Failed to fetch new data, serving stale cached data due to error.');
+            // Kirim status 200 OK dengan data lama.
+            return res.status(200).json(cachedCryptoData); 
+        }
+        // Jika tidak ada data di cache dan terjadi error, kirimkan respons error 500 ke frontend.
+        res.status(500).json({ error: 'Failed to retrieve crypto data.', message: error.message });
+    }
+});
+
+// 6. Menjalankan Server
+// Membuat aplikasi Express mulai mendengarkan permintaan masuk pada PORT yang ditentukan.
+// Ketika server siap, pesan akan dicetak ke konsol/terminal.
+app.listen(PORT, () => {
+    console.log(`Crypto API Proxy server running on http://localhost:${PORT}`);
+    console.log(`Access crypto data at http://localhost:${PORT}/api/crypto-assets`);
+});
