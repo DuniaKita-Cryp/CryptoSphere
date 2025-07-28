@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tokenomics dan Ekonomi Kripto | CryptoSphere</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Space Grotesk', sans-serif; }
+    .gradient-text {
+      background: linear-gradient(90deg, #00f5d4, #7b2cbf, #ff8906);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-x 8s ease infinite;
+    }
+    .dark .gradient-text {
+        background: linear-gradient(90deg, #00f5d4, #7b2cbf, #ff8906);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradient-x 8s ease infinite;
+    }
+    .lesson-card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .lesson-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    .dark .lesson-card:hover {
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+    .lesson-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--card-gradient-start), var(--card-gradient-end));
+    }
+    /* Dynamic gradient colors for cards based on theme */
+    .light {
+        --card-gradient-start: #00f5d4;
+        --card-gradient-end: #7b2cbf;
+    }
+    .dark {
+        --card-gradient-start: #00f5d4;
+        --card-gradient-end: #7b2cbf;
+    }
+
+    /* Custom scrollbar for better aesthetics */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    .dark::-webkit-scrollbar-track {
+        background: #1e1e2e;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+    .dark::-webkit-scrollbar-thumb {
+        background: #444;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    /* Mobile menu styles */
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: white; /* Sesuaikan dengan warna header */
+        /* dark:bg-dark; */ /* Sesuaikan dengan warna header */
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        padding: 1rem 0;
+        border-radius: 0 0 1rem 1rem;
+        z-index: 40; /* Di bawah header tetap */
+    }
+
+    .dark .mobile-menu {
+      background-color: #0f0e17; /* Dark background for dark mode */
+    }
+
+    .mobile-menu.active {
+        display: flex;
+    }
+
+    .mobile-menu a, .mobile-menu button {
+        padding: 0.75rem 1.5rem;
+        text-align: left;
+        color: #0f0e17; /* Text color for light mode */
+        /* dark:text-light; */ /* Text color for dark mode */
+    }
+
+    .dark .mobile-menu a, .dark .mobile-menu button {
+      color: #fffffe;
+    }
+
+    .mobile-menu a:hover, .mobile-menu button:hover {
+        background-color: #f0f0f0;
+        /* dark:bg-card; */
+    }
+
+    .dark .mobile-menu a:hover, .dark .mobile-menu button:hover {
+        background-color: #1e1e2e;
+    }
+
+
+    /* Hamburger icon animation */
+    .mobile-menu-icon {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .mobile-menu-icon .bar {
+      height: 2px;
+      width: 100%;
+      background-color: #0f0e17; /* Warna default bar */
+      /* dark:background-color: #fffffe; */ /* Warna bar dalam dark mode */
+      transition: all 0.3s ease;
+      border-radius: 9999px;
+    }
+
+    .dark .mobile-menu-icon .bar {
+      background-color: #fffffe;
+    }
+
+    .mobile-menu-icon.open .bar:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .mobile-menu-icon.open .bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-icon.open .bar:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Specific styles for module content */
+    .content-section {
+      padding: 2rem;
+      background-color: var(--content-bg-light);
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+    .dark .content-section {
+      background-color: var(--content-bg-dark);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Variables for content section backgrounds */
+    .light {
+        --content-bg-light: #ffffff;
+    }
+    .dark {
+        --content-bg-dark: #1e1e2e;
+    }
+
+    .example-box {
+      background-color: #f8f8f8;
+      border-left: 4px solid #00f5d4;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .dark .example-box {
+      background-color: #2a2a3e;
+      border-left-color: #00f5d4;
+      color: #e0e0e0;
+    }
+
+    .example-box strong {
+        color: #0f0e17; /* Light mode */
+    }
+    .dark .example-box strong {
+        color: #fffffe; /* Dark mode */
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        fontFamily: {
+          sans: ['Space Grotesk', 'sans-serif'],
+        },
+        extend: {
+          colors: {
+            primary: "#00f5d4",
+            secondary: "#7b2cbf",
+            dark: "#0f0e17",
+            light: "#fffffe",
+            card: "#1e1e2e",
+            accent: "#ff8906"
+          },
+          animation: {
+            'gradient-x': 'gradient-x 8s ease infinite',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            'gradient-x': {
+              '0%, 100%': { 'background-position': '0% 50%' },
+              '50%': { 'background-position': '100% 50%' },
+            },
+            'float': {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-light text-dark dark:bg-dark dark:text-light font-sans scroll-smooth transition-colors duration-300">
+  <div class="fixed inset-0 overflow-hidden -z-10">
+    <div class="absolute top-1/4 left-1/4 w-4 h-4 rounded-full bg-primary opacity-20 animate-float"></div>
+    <div class="absolute top-1/3 right-1/4 w-6 h-6 rounded-full bg-secondary opacity-15 animate-float" style="animation-delay: 1s;"></div>
+    <div class="absolute bottom-1/4 left-1/3 w-8 h-8 rounded-full bg-accent opacity-10 animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-1/3 right-1/3 w-5 h-5 rounded-full bg-primary opacity-15 animate-float" style="animation-delay: 3s;"></div>
+  </div>
+
+  <header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-dark/80 backdrop-blur-md shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center relative">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-primary">
+          <path fill-rule="evenodd" d="M12 21.75c5.385 0 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25 2.25 6.615 2.25 12s4.365 9.75 9.75 9.75zM10.5 7.963a1.5 1.5 0 00-1.5 1.5v5.074a1.5 1.5 0 001.5 1.5h5.074a1.5 1.5 0 001.5-1.5v-5.074a1.5 1.5 0 00-1.5-1.5H10.5z" clip-rule="evenodd" />
+        </svg>
+        <h1 class="text-2xl font-bold gradient-text">CryptoSphere</h1>
+      </div>
+      
+      <nav id="desktop-nav" class="hidden md:flex items-center space-x-8">
+        <a href="index.html#home" class="font-medium hover:text-primary transition-colors">Beranda</a>
+        <a href="index.html#learn" class="font-medium text-primary transition-colors">Belajar</a>
+        <a href="index.html#market" class="font-medium hover:text-primary transition-colors">Market</a>
+        <a href="index.html#tools" class="font-medium hover:text-primary transition-colors">Tools</a>
+        <a href="index.html#community" class="font-medium hover:text-primary transition-colors">Komunitas</a>
+        
+        <button id="theme-toggle" class="p-2 rounded-full bg-white dark:bg-card shadow-md" aria-label="Toggle dark mode">
+          <svg id="moon-icon" class="w-5 h-5 text-dark dark:text-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg id="sun-icon" class="w-5 h-5 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+      </nav>
+      
+      <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-dark dark:text-light mobile-menu-icon" aria-label="Open mobile menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <nav id="mobile-menu" class="mobile-menu">
+        <a href="index.html#home" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Beranda</a>
+        <a href="index.html#learn" class="font-medium text-primary transition-colors py-3 px-6 w-full text-center">Belajar</a>
+        <a href="index.html#market" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Market</a>
+        <a href="index.html#tools" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Tools</a>
+        <a href="index.html#community" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Komunitas</a>
+        <button id="mobile-theme-toggle" class="p-2 mt-4 rounded-full bg-white dark:bg-card shadow-md md:hidden" aria-label="Toggle dark mode">
+          <svg id="mobile-moon-icon" class="w-5 h-5 text-dark dark:text-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg id="mobile-sun-icon" class="w-5 h-5 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-grow py-16 px-6">
+    <div class="max-w-7xl mx-auto pt-16">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <span class="text-primary text-sm font-semibold uppercase tracking-wider mb-2 block">Jalur Mahir · Modul 3</span>
+        <h2 class="text-5xl md:text-6xl font-bold leading-tight gradient-text mb-4">
+          Tokenomics dan Ekonomi Kripto
+        </h2>
+        <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          Pahami mekanisme penawaran dan permintaan token yang mendorong nilai aset digital.
+        </p>
+      </div>
+
+      <div class="content-section" data-aos="fade-up" data-aos-delay="100">
+        <h3 class="text-3xl font-bold text-primary mb-4">Apa Itu Tokenomics?</h3>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+          Tokenomics adalah istilah gabungan dari "token" dan "economics", yang merujuk pada ilmu tentang bagaimana suatu token kripto dirancang untuk berfungsi dalam ekosistemnya. Ini mencakup semua aspek yang memengaruhi penawaran dan permintaan suatu token, serta insentif yang mendorong perilaku partisipan jaringan.
+        </p>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+          Sama seperti ekonomi makro mempelajari negara, dan ekonomi mikro mempelajari perusahaan, tokenomics mempelajari "negara" atau "perusahaan" dalam bentuk protokol blockchain atau aplikasi terdesentralisasi (dApps). Memahami tokenomics sangat penting untuk menilai nilai fundamental dan potensi pertumbuhan jangka panjang suatu proyek kripto, lebih dari sekadar hype atau pergerakan harga jangka pendek.
+        </p>
+        <div class="example-box">
+            <p><strong>Metafora Ekonomi Kripto:</strong> Bayangkan token sebagai mata uang suatu negara virtual. Tokenomics adalah kebijakan ekonomi negara itu: bagaimana uang dicetak, didistribusikan, digunakan oleh warganya, dan apakah ada mekanisme untuk mengontrol inflasi atau deflasi. Kebijakan ini akan menentukan seberapa berharga mata uang tersebut dalam jangka panjang.</p>
+        </div>
+      </div>
+
+      <div class="content-section" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="text-3xl font-bold text-primary mb-4">Komponen Kunci Tokenomics</h3>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+          Tokenomics terdiri dari beberapa elemen penting yang saling berinteraksi:
+        </p>
+
+        <ul class="list-disc list-inside text-lg text-gray-700 dark:text-gray-300 mb-6 space-y-4">
+          <li>
+            <strong>Distribusi Token (Token Distribution):</strong>
+            <p class="ml-4 text-base">Bagaimana token awal didistribusikan kepada berbagai pihak. Ini mencakup:
+              <ul class="list-disc list-inside text-base ml-8">
+                <li><strong>Alokasi Tim/Pendiri:</strong> Persentase token untuk tim inti proyek. Penting untuk melihat periode penguncian (vesting schedule) untuk mencegah *dumping* dini.</li>
+                <li><strong>Investor Awal (Seed/Private Sale):</strong> Alokasi untuk investor yang mendukung proyek di tahap awal. Juga perhatikan *vesting schedule* mereka.</li>
+                <li><strong>Penjualan Publik (Public Sale/IDO/IEO):</strong> Alokasi untuk masyarakat umum.</li>
+                <li><strong>Dana Ekosistem/Komunitas:</strong> Token yang dialokasikan untuk pengembangan ekosistem, insentif, atau hibah.</li>
+                <li><strong>Penambang/Validator (PoW/PoS Rewards):</strong> Imbalan yang didistribusikan kepada mereka yang mengamankan jaringan.</li>
+              </ul>
+            </p>
+            <div class="example-box">
+                <p><strong>Contoh: Distribusi Token "X project"</strong></p>
+                <p>Tim: 15% (vesting 4 tahun, cliff 1 tahun)</p>
+                <p>Investor Awal: 20% (vesting 3 tahun, cliff 6 bulan)</p>
+                <p>Penjualan Publik: 10%</p>
+                <p>Dana Ekosistem: 30%</p>
+                <p>Reward Staking: 25% (didistribusikan selama 10 tahun)</p>
+                <p>Perhatikan bahwa tim dan investor memiliki periode penguncian, yang mengurangi tekanan jual instan.</p>
+            </div>
+          </li>
+          <li>
+            <strong>Suplai Token (Token Supply):</strong>
+            <p class="ml-4 text-base">Meliputi total pasokan dan pasokan yang beredar:
+              <ul class="list-disc list-inside text-base ml-8">
+                <li><strong>Max Supply (Total Supply):</strong> Jumlah maksimum token yang akan pernah ada. (Contoh: Bitcoin dengan 21 juta BTC). Token dengan pasokan terbatas cenderung bersifat deflasi.</li>
+                <li><strong>Circulating Supply:</strong> Jumlah token yang saat ini beredar di tangan publik. Ini adalah angka yang paling relevan untuk menghitung kapitalisasi pasar.</li>
+                <li><strong>Inflationary vs. Deflationary:</strong>
+                  <ul>
+                    <li>Inflasi: Pasokan token meningkat seiring waktu (misalnya, melalui mining atau staking rewards tanpa batas).</li>
+                    <li>Deflasi: Pasokan token berkurang seiring waktu (misalnya, melalui mekanisme burning).</li>
+                  </ul>
+                </li>
+              </ul>
+            </p>
+          </li>
+          <li>
+            <strong>Utilitas Token (Token Utility):</strong>
+            <p class="ml-4 text-base">Bagaimana token digunakan dalam ekosistem. Ini adalah pendorong permintaan utama:
+              <ul class="list-disc list-inside text-base ml-8">
+                <li><strong>Tata Kelola (Governance):</strong> Pemegang token dapat memberikan suara pada keputusan penting proyek (misalnya, perubahan protokol, penggunaan dana treasury).</li>
+                <li><strong>Biaya Transaksi (Gas Fees):</strong> Token digunakan untuk membayar biaya di jaringan (misalnya, ETH di Ethereum).</li>
+                <li><strong>Staking:</strong> Mengunci token untuk mengamankan jaringan atau menyediakan likuiditas, mendapatkan imbalan.</li>
+                <li><strong>Akses Fitur/Layanan:</strong> Token diperlukan untuk mengakses fitur premium atau layanan dalam dApp.</li>
+                <li><strong>Jaminan (Collateral):</strong> Token digunakan sebagai jaminan untuk pinjaman di protokol DeFi.</li>
+                <li><strong>Mata Uang Pembayaran:</strong> Digunakan untuk membeli barang/jasa dalam ekosistem tertentu.</li>
+              </ul>
+            </p>
+            <div class="example-box">
+                <p><strong>Contoh: Utilitas Token "DAO Governance Token"</strong></p>
+                <p>Anda memegang 1000 token DAO Governance Token. Token ini memungkinkan Anda untuk: </p>
+                <p>1. Memberikan suara pada proposal untuk mengubah struktur biaya platform.</p>
+                <p>2. Men-stake token Anda untuk mendapatkan bagian dari pendapatan protokol.</p>
+                <p>3. Menggunakan token untuk mengakses fitur eksklusif di aplikasi terdesentralisasi mereka.</p>
+                <p>Semakin banyak orang yang ingin menggunakan fitur ini, semakin tinggi permintaan terhadap token.</p>
+            </div>
+          </li>
+          <li>
+            <strong>Mekanisme Imbalan dan Pembakaran (Reward & Burning Mechanisms):</strong>
+            <p class="ml-4 text-base">Bagaimana token baru diterbitkan dan token lama dihilangkan dari peredaran:
+              <ul class="list-disc list-inside text-base ml-8">
+                <li><strong>Mining/Staking Rewards:</strong> Penerbitan token baru sebagai imbalan bagi peserta jaringan.</li>
+                <li><strong>Fee Burning:</strong> Sebagian dari biaya transaksi atau pendapatan protokol digunakan untuk membeli dan membakar token dari peredaran, mengurangi pasokan.</li>
+                <li><strong>Buyback & Burn:</strong> Proyek menggunakan keuntungan untuk membeli kembali token dari pasar dan membakarnya.</li>
+              </ul>
+            </p>
+          </li>
+          <li>
+            <strong>Model Value Accrual:</strong>
+            <p class="ml-4 text-base">Bagaimana nilai dari ekosistem ditangkap oleh pemegang token. Ini dapat langsung (misalnya, biaya yang dibagikan kepada staker) atau tidak langsung (peningkatan permintaan karena penggunaan jaringan).</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="content-section" data-aos="fade-up" data-aos-delay="300">
+        <h3 class="text-3xl font-bold text-primary mb-4">Mengapa Tokenomics Penting?</h3>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+          Analisis tokenomics adalah fundamental untuk pengambilan keputusan investasi yang bijak di ruang kripto:
+        </p>
+        <ul class="list-disc list-inside text-lg text-gray-700 dark:text-gray-300 mb-6 space-y-2">
+          <li>
+            Penilaian Fundamental: Memberikan kerangka kerja untuk menilai apakah suatu token memiliki model ekonomi yang berkelanjutan dan sehat.
+          </li>
+          <li>
+            Prediksi Tekanan Jual/Beli: Jadwal vesting dan supply release dapat mengindikasikan kapan akan ada peningkatan tekanan jual. Mekanisme burning atau staking yang kuat dapat mengindikasikan tekanan beli.
+          </li>
+          <li>
+            Memahami Insentif: Membantu Anda memahami bagaimana insentif token mendorong perilaku pengguna, pengembang, dan validator, yang pada gilirannya memengaruhi pertumbuhan dan keamanan jaringan.
+          </li>
+          <li>
+            Identifikasi Risiko: Membantu mengidentifikasi risiko seperti inflasi berlebihan, konsentrasi kepemilikan token yang tinggi, atau kurangnya utilitas nyata.
+          </li>
+          <li>
+            Keberlanjutan Proyek: Sebuah tokenomics yang dirancang dengan baik adalah indikator kuat dari keberlanjutan dan viabilitas jangka panjang suatu proyek.
+          </li>
+        </ul>
+        <div class="example-box">
+            <p><strong>Studi Kasus: Perubahan Tokenomics Ethereum (Merge & EIP-1559)</strong></p>
+            <p>1. EIP-1559 (Burning Fee): Bagian dari biaya transaksi Ethereum kini dibakar, mengurangi suplai ETH. Ini mengubah ETH dari aset inflasi murni menjadi aset dengan potensi deflasi, meningkatkan kelangkaannya.</p>
+            <p>2. The Merge (PoW ke PoS): Peralihan dari Proof of Work ke Proof of Stake mengurangi emisi ETH baru secara drastis (reward untuk penambang hilang, diganti dengan reward validator yang jauh lebih rendah). Kombinasi burning dan pengurangan emisi ini menciptakan apa yang disebut "triple halving" efek deflasi, yang secara signifikan mengubah prospek penawaran ETH dan dampaknya terhadap harga.</p>
+        </div>
+      </div>
+
+      <div class="content-section" data-aos="fade-up" data-aos-delay="400">
+        <h3 class="text-3xl font-bold text-primary mb-4">Cara Menganalisis Tokenomics</h3>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+          Untuk menganalisis tokenomics suatu proyek, ikuti langkah-langkah ini:
+        </p>
+        <ul class="list-disc list-inside text-lg text-gray-700 dark:text-gray-300 mb-6 space-y-2">
+          <li>
+            Baca Whitepaper dan Litepaper: Ini adalah sumber utama informasi tentang tokenomics.
+          </li>
+          <li>
+            Cari Dokumentasi Tokenomics Khusus: Banyak proyek memiliki halaman atau dokumen khusus yang menjelaskan tokenomics secara rinci.
+          </li>
+          <li>
+            Periksa Jadwal Pelepasan Token (Vesting Schedule): Gunakan alat seperti CoinGecko atau CoinMarketCap untuk melihat data suplai beredar dan jadwal rilis.
+          </li>
+          <li>
+            Pahami Utilitas Nyata: Apakah token memiliki kasus penggunaan yang jelas dan mendesak? Apakah ada insentif kuat bagi pengguna untuk memegang dan menggunakan token?
+          </li>
+          <li>
+            Analisis Mekanisme Permintaan dan Penawaran:
+              <ul>
+                <li class="ml-8 text-base">Bagaimana token baru dicetak? (Inflasi)</li>
+                <li class="ml-8 text-base">Apakah ada mekanisme pembakaran? (Deflasi)</li>
+                <li class="ml-8 text-base">Bagaimana pendapatan proyek terkait dengan token?</li>
+              </ul>
+          </li>
+          <li>
+            Lihat Data On-Chain: Gunakan alat analisis on-chain (seperti Glassnode atau CryptoQuant) untuk memantau pergerakan token, distribusi kepemilikan, dan aktivitas jaringan.
+          </li>
+        </ul>
+      </div>
+
+      <div class="text-center mt-16" data-aos="fade-up" data-aos-delay="500">
+        <h3 class="text-3xl font-bold mb-4">Kuasai Ekonomi di Balik Kripto!</h3>
+        <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          Tokenomics adalah tulang punggung dari setiap proyek kripto yang sukses. Dengan memahami bagaimana token berinteraksi dengan ekosistemnya, Anda akan menjadi investor yang lebih cerdas dan terinformasi.
+        </p>
+        <a href="mahir.html" class="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-full hover:shadow-lg transition-all transform hover:-translate-y-1">
+          Kembali ke Jalur Mahir
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-dark dark:bg-card py-16 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid md:grid-cols-4 gap-12">
+        <div>
+          <div class="flex items-center space-x-2 mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-primary">
+              <path fill-rule="evenodd" d="M12 21.75c5.385 0 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25 2.25 6.615 2.25 12s4.365 9.75 9.75 9.75zM10.5 7.963a1.5 1.5 0 00-1.5 1.5v5.074a1.5 1.5 0 001.5 1.5h5.074a1.5 1.5 0 001.5-1.5v-5.074a1.5 1.5 0 00-1.5-1.5H10.5z" clip-rule="evenodd" />
+            </svg>
+            <h2 class="text-2xl font-bold text-white">CryptoSphere</h2>
+          </div>
+          <p class="text-gray-400 mb-6">
+            Platform edukasi cryptocurrency terkemuka di Indonesia.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="Twitter">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 01-1.93.07 4.28 4.28 0 004 2.98 8.521 8.521 0 01-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="Instagram">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="LinkedIn">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Edukasi</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Pemula</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Analisis Teknikal</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Analisis Fundamental</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">DeFi</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">NFT</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Tools</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kalkulator Profit</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Portfolio Tracker</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Gas Fee Tracker</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Market Cap Calculator</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Perusahaan</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Tentang Kami</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Karir</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kebijakan Privasi</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Syarat & Ketentuan</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kontak</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+        <p class="text-gray-500">© 2025 CryptoSphere. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true,
+      easing: 'ease-in-out',
+      offset: 100,
+    });
+
+    // Dark Mode Toggle (Desktop)
+    const themeToggle = document.getElementById('theme-toggle');
+    const moonIcon = document.getElementById('moon-icon');
+    const sunIcon = document.getElementById('sun-icon');
+
+    // Dark Mode Toggle (Mobile)
+    const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+    const mobileMoonIcon = document.getElementById('mobile-moon-icon');
+    const mobileSunIcon = document.getElementById('mobile-sun-icon');
+
+    function applyTheme(isDark) {
+        if (isDark) {
+            document.documentElement.classList.add('dark');
+            if (moonIcon) moonIcon.classList.add('hidden');
+            if (sunIcon) sunIcon.classList.remove('hidden');
+            if (mobileMoonIcon) mobileMoonIcon.classList.add('hidden');
+            if (mobileSunIcon) mobileSunIcon.classList.remove('hidden');
+            localStorage.setItem('color-theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            if (moonIcon) moonIcon.classList.remove('hidden');
+            if (sunIcon) sunIcon.classList.add('hidden');
+            if (mobileMoonIcon) mobileMoonIcon.classList.remove('hidden');
+            if (mobileSunIcon) mobileSunIcon.classList.add('hidden');
+            localStorage.setItem('color-theme', 'light');
+        }
+    }
+
+    // Cek preferensi tema saat memuat halaman
+    const savedTheme = localStorage.getItem('color-theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        applyTheme(true);
+    } else {
+        applyTheme(false);
+    }
+
+    // Toggle button click event
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            applyTheme(!document.documentElement.classList.contains('dark'));
+        });
+    }
+    if (mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', function() {
+            applyTheme(!document.documentElement.classList.contains('dark'));
+        });
+    }
+
+    // Hamburger Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenuButton.classList.toggle('open'); // Untuk animasi icon
+            mobileMenu.classList.toggle('active'); // Untuk menampilkan/menyembunyikan menu
+        });
+
+        // Menutup menu mobile saat link diklik (opsional, tapi disarankan)
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuButton.classList.remove('open');
+                mobileMenu.classList.remove('active');
+            });
+        });
+    }
+  </script>
+</body>
+</html>
