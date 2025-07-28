@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semua Aset & Harga Real-time | CryptoSphere</title>
+  <title>Semua Aset Kripto | CryptoSphere</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -228,85 +228,88 @@
   <main class="flex-grow py-16 px-6">
     <div class="max-w-7xl mx-auto pt-16">
       <div class="text-center mb-12">
-        <span class="text-primary text-sm font-semibold uppercase tracking-wider mb-2 block">Data Real-time</span>
+        <span class="text-primary text-sm font-semibold uppercase tracking-wider mb-2 block">Data Lengkap</span>
         <h2 class="text-5xl md:text-6xl font-bold leading-tight gradient-text mb-4">
-          Semua Aset & Harga
+          Semua Aset Kripto & Data Pasar
         </h2>
         <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-          Pantau harga kripto, DeFi, NFT, Metaverse, dan Emas secara langsung.
+          Jelajahi harga real-time, volume perdagangan, dan kapitalisasi pasar untuk ribuan aset kripto.
         </p>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white dark:bg-card rounded-2xl shadow-xl p-6 asset-card">
-          <div class="flex items-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-primary mr-3">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.794.18 1.623-.45 1.623-1.316V10.75a3 3 0 0 0-3-3H4.5a3 3 0 0 0-3 3v11.566c0 .866.829 1.495 1.623 1.316ZM18.75 10.5h.375a3 3 0 0 1 3 3v11.566c0 .866-.829 1.495-1.623 1.316a60.07 60.07 0 0 1-4.134-1.17Zm6.556-3.79c.8-.088 1.761.341 1.761 1.258v7.555a3 3 0 0 1-3 3H2.25a3 3 0 0 1-3-3v-7.555c0-.917.961-1.346 1.761-1.258a12.193 12.193 0 0 1 7.214-.265 14.887 14.887 0 0 0 4.382-.442 12.012 12.012 0 0 1 7.42-3.087Z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
-            </svg>
-            <h3 class="text-2xl font-bold">Kripto Teratas</h3>
-          </div>
-          <div id="crypto-data" class="space-y-4">
-            <p class="text-gray-500 dark:text-gray-400">Memuat data...</p>
-          </div>
-          <button onclick="window.location.href='index.html#market'" class="mt-6 w-full py-3 bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-colors">Lihat Detail di Market</button>
+      <div class="bg-white dark:bg-card rounded-2xl shadow-xl p-6 mb-8">
+        <div class="flex flex-col md:flex-row items-center justify-between mb-6 space-y-4 md:space-y-0 md:space-x-4">
+          <input type="text" id="search-input" placeholder="Cari aset..." class="flex-grow p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-dark focus:ring-primary focus:border-primary transition-all">
+          
+          <select id="sort-by" class="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-dark focus:ring-primary focus:border-primary transition-all">
+            <option value="market_cap_desc">Kapitalisasi Pasar (Tertinggi)</option>
+            <option value="market_cap_asc">Kapitalisasi Pasar (Terendah)</option>
+            <option value="volume_desc">Volume (Tertinggi)</option>
+            <option value="volume_asc">Volume (Terendah)</option>
+            <option value="price_desc">Harga (Tertinggi)</option>
+            <option value="price_asc">Harga (Terendah)</option>
+          </select>
+
+          <select id="price-change-filter" class="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-dark focus:ring-primary focus:border-primary transition-all">
+            <option value="24h">Perubahan Harga (24j)</option>
+            <option value="7d">Perubahan Harga (7h)</option>
+            <option value="30d">Perubahan Harga (30h)</option>
+          </select>
+
+          <button id="apply-filters" class="w-full md:w-auto px-6 py-3 bg-primary text-dark font-semibold rounded-lg hover:bg-primary/80 transition-colors">Terapkan Filter</button>
         </div>
 
-        <div class="bg-white dark:bg-card rounded-2xl shadow-xl p-6 asset-card">
-          <div class="flex items-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-secondary mr-3">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75h-3A3.75 3.75 0 0 0 8.25 10.5v1.5m7.5-6.75h-3c-1.802 0-3.375 1.226-3.735 3M15.75 6.75H12m0 3.75H9m1.5-6v8.25c0 .621.504 1.125 1.125 1.125H16.5a2.25 2.25 0 0 0 2.25-2.25V6.75M12 15.75V12" />
-            </svg>
-            <h3 class="text-2xl font-bold">DeFi</h3>
-          </div>
-          <div id="defi-data" class="space-y-4">
-            <p class="text-gray-500 dark:text-gray-400">Memuat data...</p>
-          </div>
-          <a href="index.html#learn" class="mt-6 w-full py-3 bg-secondary/10 text-secondary font-medium rounded-lg hover:bg-secondary/20 transition-colors block text-center">Pelajari DeFi Lebih Lanjut</a>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-50 dark:bg-dark">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  #
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Aset
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Harga
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  24j %
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
+                  Kapitalisasi Pasar
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                  Volume (24j)
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                  Grafik (7j)
+                </th>
+              </tr>
+            </thead>
+            <tbody id="crypto-table-body" class="bg-white dark:bg-card divide-y divide-gray-200 dark:divide-gray-700">
+              <tr><td colspan="7" class="text-center py-4 text-gray-500 dark:text-gray-400">Memuat data kripto...</td></tr>
+            </tbody>
+          </table>
         </div>
 
-        <div class="bg-white dark:bg-card rounded-2xl shadow-xl p-6 asset-card">
-          <div class="flex items-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-accent mr-3">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.75c-2.651 0-5.26-.097-7.817-.291A5.25 5.25 0 0 1 3 16.5V9.75a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v6.75c0 1.242-.464 2.345-1.218 3.19A5.25 5.25 0 0 1 12 21.75Z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M10.25 7.5a.75.75 0 0 1 .75-.75h2.25a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-.75.75h-2.25a.75.75 0 0 1-.75-.75v-3Z" />
-            </svg>
-            <h3 class="text-2xl font-bold">NFT</h3>
-          </div>
-          <div id="nft-data" class="space-y-4">
-            <p class="text-gray-500 dark:text-gray-400">Memuat data...</p>
-          </div>
-          <a href="index.html#learn" class="mt-6 w-full py-3 bg-accent/10 text-accent font-medium rounded-lg hover:bg-accent/20 transition-colors block text-center">Pelajari NFT Lebih Lanjut</a>
-        </div>
-
-        <div class="bg-white dark:bg-card rounded-2xl shadow-xl p-6 asset-card">
-          <div class="flex items-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-primary mr-3">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21.75H5.128a2.25 2.25 0 0 1-2.122-2.122L3 17.25m8.144-4.007a.75.75 0 0 1-.879.212l-1.967-.655a.75.75 0 0 0-.964.167l-2.087 2.087M9 17.25h.008v.008H9v-.008Z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5a.75.75 0 0 1 .75-.75h.008v.008H12.75a.75.75 0 0 1-.75.75Zm.375 0a.75.75 0 0 1-.75-.75h.008v.008h-.008a.75.75 0 0 1 .75-.75Z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 4.5h-.008v-.008H14.25V4.5Zm0 1.5a.75.75 0 0 1-.75-.75h.008v.008h-.008a.75.75 0 0 1 .75-.75Z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-            <h3 class="text-2xl font-bold">Metaverse</h3>
-          </div>
-          <div id="metaverse-data" class="space-y-4">
-            <p class="text-gray-500 dark:text-gray-400">Memuat data...</p>
-          </div>
-          <a href="index.html#learn" class="mt-6 w-full py-3 bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-colors block text-center">Jelajahi Metaverse</a>
-        </div>
-
-        <div class="bg-white dark:bg-card rounded-2xl shadow-xl p-6 asset-card">
-          <div class="flex items-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-yellow-500 mr-3">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182L12 12.588m-3 2.122.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182L12 12.588m-3 2.122L9 11.25M12 10.5v-.5a2.25 2.25 0 0 0-2.25-2.25V6a2.25 2.25 0 0 1 2.25-2.25h.5a2.25 2.25 0 0 1 2.25 2.25v.5a2.25 2.25 0 0 0-2.25 2.25V14.25m-6 6.75a3 3 0 1 1 0-6 3 3 0 0 1 0 6ZM7.5 7.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm9 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm3.5 0a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z" />
-            </svg>
-            <h3 class="text-2xl font-bold">Harga Emas</h3>
-          </div>
-          <div id="gold-data" class="space-y-4">
-            <p class="text-gray-500 dark:text-gray-400">Memuat data...</p>
-          </div>
-          <button onclick="alert('Fitur analisis emas segera hadir!')" class="mt-6 w-full py-3 bg-yellow-500/10 text-yellow-500 font-medium rounded-lg hover:bg-yellow-500/20 transition-colors">Analisis Emas</button>
+        <div class="flex justify-center mt-8">
+          <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+            <button id="prev-page" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-dark text-sm font-medium text-gray-500 hover:bg-gray-50 dark:hover:bg-card/80">
+              <span class="sr-only">Previous</span>
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <span id="page-info" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white dark:bg-dark text-sm font-medium text-gray-700 dark:text-gray-300">
+              Halaman 1
+            </span>
+            <button id="next-page" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-dark text-sm font-medium text-gray-500 hover:bg-gray-50 dark:hover:bg-card/80">
+              <span class="sr-only">Next</span>
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </nav>
         </div>
       </div>
     </div>
@@ -466,106 +469,270 @@
         });
     }
 
-    // Fungsi untuk memuat data kripto
-    async function fetchCryptoCategoriesData(category, elementId, numCoins = 3) {
-      const element = document.getElementById(elementId);
-      element.innerHTML = `<p class="text-gray-500 dark:text-gray-400">Memuat data ${category}...</p>`;
+    // === Logika untuk halaman all-assets.html ===
+    let currentPage = 1;
+    const itemsPerPage = 10; // Jumlah koin per halaman
+    let allCoinsData = []; // Menyimpan semua data koin yang diambil
+    let filteredCoins = []; // Menyimpan data koin yang sudah difilter/dicari
 
-      let apiUrl = '';
-      let ids = '';
+    async function fetchAllCryptoData() {
+      const tableBody = document.getElementById('crypto-table-body');
+      tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-gray-500 dark:text-gray-400">Memuat data kripto...</td></tr>`;
 
-      if (category === 'kripto teratas') {
-        apiUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${numCoins}&page=1&sparkline=false&price_change_percentage=24h`;
-      } else if (category === 'defi') {
-        apiUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&category=decentralized-finance-defi&order=market_cap_desc&per_page=${numCoins}&page=1&sparkline=false&price_change_percentage=24h`;
-      } else if (category === 'nft') {
-        apiUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&category=non-fungible-tokens-nft&order=market_cap_desc&per_page=${numCoins}&page=1&sparkline=false&price_change_percentage=24h`;
-      } else if (category === 'metaverse') {
-        apiUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&category=metaverse&order=market_cap_desc&per_page=${numCoins}&page=1&sparkline=false&price_change_percentage=24h`;
-      }
+      const currency = 'usd'; // Mata uang dasar
+      const perPage = 250; // Ambil lebih banyak data per permintaan untuk memungkinkan pencarian/filter lokal
+      let allData = [];
+      let page = 1;
+      let hasMore = true;
 
       try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error(`Failed to fetch ${category} data`);
-        const data = await response.json();
+        while (hasMore) {
+          const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=${perPage}&page=${page}&sparkline=true&price_change_percentage=24h,7d,30d`;
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`Gagal mengambil data: ${response.statusText}`);
+          const data = await response.json();
 
-        if (data.length === 0) {
-          element.innerHTML = `<p class="text-gray-500 dark:text-gray-400">Tidak ada data ${category} yang ditemukan.</p>`;
-          return;
+          if (data.length > 0) {
+            allData = allData.concat(data);
+            page++;
+          } else {
+            hasMore = false; // Tidak ada lagi data
+          }
+          // Batasi jumlah halaman yang diambil untuk menghindari beban berlebihan pada API
+          if (page > 5) hasMore = false; // Misalnya, ambil hanya 5 halaman pertama (1250 koin)
         }
-
-        let htmlContent = '';
-        data.forEach(coin => {
-          const priceChangeClass = coin.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500';
-          const priceChangeIcon = coin.price_change_percentage_24h >= 0 ? '▲' : '▼';
-          htmlContent += `
-            <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-2 mb-2 last:border-b-0 last:pb-0 last:mb-0">
-              <div class="flex items-center">
-                <img src="${coin.image}" alt="${coin.name}" class="w-6 h-6 mr-2 rounded-full">
-                <span class="font-medium text-lg">${coin.name}</span>
-              </div>
-              <div class="text-right">
-                <p class="font-bold">$${coin.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                <p class="text-sm ${priceChangeClass}">${priceChangeIcon} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%</p>
-              </div>
-            </div>
-          `;
-        });
-        element.innerHTML = htmlContent;
-
+        allCoinsData = allData;
+        applyFiltersAndRender(); // Terapkan filter awal dan render tabel
       } catch (error) {
-        console.error(`Error fetching ${category} data:`, error);
-        element.innerHTML = `<p class="text-red-500 dark:text-red-400">Gagal memuat data ${category}.</p>`;
+        console.error("Error fetching all crypto data:", error);
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-red-500 dark:text-red-400">Gagal memuat data. Silakan coba lagi nanti.</td></tr>`;
       }
     }
 
-    // Fungsi untuk memuat data Emas (simulasi)
-    function fetchGoldData() {
-      const element = document.getElementById('gold-data');
-      element.innerHTML = `<p class="text-gray-500 dark:text-gray-400">Memuat data emas...</p>`;
+    function renderCryptoTable(coinsToRender) {
+      const tableBody = document.getElementById('crypto-table-body');
+      tableBody.innerHTML = ''; // Kosongkan tabel sebelum mengisi
 
-      // Simulasi data emas
-      // Dalam aplikasi nyata, Anda akan menggunakan API eksternal (misalnya Gold Price API, Finnhub, Alpha Vantage)
-      // Contoh: fetch('https://api.goldpriceapi.com/YOUR_API_KEY/USD/json')
-      const currentGoldPrice = 2320 + (Math.random() - 0.5) * 10; // Variasi kecil
-      const priceChange24h = (Math.random() - 0.5) * 0.8; // +/- 0.4%
-      const priceChangeClass = priceChange24h >= 0 ? 'text-green-500' : 'text-red-500';
-      const priceChangeIcon = priceChange24h >= 0 ? '▲' : '▼';
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const paginatedCoins = coinsToRender.slice(startIndex, endIndex);
 
-      element.innerHTML = `
-        <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-2 mb-2 last:border-b-0 last:pb-0 last:mb-0">
-          <div class="flex items-center">
-            <img src="https://assets.coingecko.com/coins/images/22901/small/gold.png?1644729424" alt="Gold" class="w-6 h-6 mr-2 rounded-full">
-            <span class="font-medium text-lg">Emas (USD/oz)</span>
-          </div>
-          <div class="text-right">
-            <p class="font-bold">$${currentGoldPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-            <p class="text-sm ${priceChangeClass}">${priceChangeIcon} ${Math.abs(priceChange24h).toFixed(2)}%</p>
-          </div>
-        </div>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-          <span class="font-bold">Disclaimer:</span> Harga emas adalah simulasi. Gunakan API real-time untuk data akurat.
-        </p>
-      `;
+      if (paginatedCoins.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-gray-500 dark:text-gray-400">Tidak ada aset kripto yang ditemukan.</td></tr>`;
+        return;
+      }
+
+      paginatedCoins.forEach((coin, index) => {
+        const actualIndex = startIndex + index + 1;
+        const priceChange24h = coin.price_change_percentage_24h_in_currency ? coin.price_change_percentage_24h_in_currency : coin.price_change_percentage_24h;
+        const priceChange7d = coin.price_change_percentage_7d_in_currency ? coin.price_change_percentage_7d_in_currency : coin.price_change_change_percentage_7d;
+        const priceChange30d = coin.price_change_percentage_30d_in_currency ? coin.price_change_percentage_30d_in_currency : coin.price_change_change_percentage_30d;
+
+        const selectedPriceChange = document.getElementById('price-change-filter').value;
+        let displayPriceChange = 0;
+        let priceChangeClass = '';
+
+        if (selectedPriceChange === '24h') {
+          displayPriceChange = priceChange24h;
+        } else if (selectedPriceChange === '7d') {
+          displayPriceChange = priceChange7d;
+        } else if (selectedPriceChange === '30d') {
+          displayPriceChange = priceChange30d;
+        }
+
+        if (displayPriceChange !== null && displayPriceChange !== undefined) {
+          priceChangeClass = displayPriceChange >= 0 ? 'text-green-500' : 'text-red-500';
+        } else {
+          displayPriceChange = 0; // Default jika null/undefined
+          priceChangeClass = 'text-gray-500';
+        }
+
+        const formattedPriceChange = Math.abs(displayPriceChange).toFixed(2);
+        const priceChangeIcon = displayPriceChange >= 0 ? '▲' : '▼';
+
+        const row = document.createElement('tr');
+        row.classList.add('hover:bg-gray-50', 'dark:hover:bg-gray-700', 'transition-colors');
+        row.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-light">
+            ${actualIndex}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-light">
+            <div class="flex items-center">
+              <img src="${coin.image}" alt="${coin.name}" class="w-6 h-6 mr-3 rounded-full">
+              <span class="font-medium">${coin.name}</span>
+              <span class="text-gray-500 uppercase ml-2 hidden sm:inline">${coin.symbol}</span>
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-light font-medium">
+            $${coin.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm ${priceChangeClass} font-medium">
+            ${priceChangeIcon} ${formattedPriceChange}%
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-light hidden sm:table-cell">
+            $${coin.market_cap ? coin.market_cap.toLocaleString() : 'N/A'}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-light hidden lg:table-cell">
+            $${coin.total_volume ? coin.total_volume.toLocaleString() : 'N/A'}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-light hidden md:table-cell">
+            <canvas id="sparkline-chart-${coin.id}" class="w-32 h-16"></canvas>
+          </td>
+        `;
+        tableBody.appendChild(row);
+
+        // Render sparkline chart if data is available
+        if (coin.sparkline_in_7d && coin.sparkline_in_7d.price && coin.sparkline_in_7d.price.length > 0) {
+          renderSparklineChart(`sparkline-chart-${coin.id}`, coin.sparkline_in_7d.price, displayPriceChange);
+        } else {
+          const chartCell = row.querySelector(`#sparkline-chart-${coin.id}`).closest('td');
+          if (chartCell) {
+            chartCell.innerHTML = '<span class="text-gray-500 text-xs">No chart data</span>';
+          }
+        }
+      });
+      updatePaginationInfo(coinsToRender.length);
     }
 
-    // Muat semua data saat halaman dimuat
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchCryptoCategoriesData('kripto teratas', 'crypto-data', 3);
-      fetchCryptoCategoriesData('defi', 'defi-data', 3);
-      fetchCryptoCategoriesData('nft', 'nft-data', 3);
-      fetchCryptoCategoriesData('metaverse', 'metaverse-data', 3);
-      fetchGoldData();
+    function renderSparklineChart(canvasId, data, priceChange) {
+      const ctx = document.getElementById(canvasId);
+      if (!ctx) return; // Exit if canvas element doesn't exist
 
-      // Refresh data setiap 5 menit (300000 ms)
-      setInterval(() => {
-        fetchCryptoCategoriesData('kripto teratas', 'crypto-data', 3);
-        fetchCryptoCategoriesData('defi', 'defi-data', 3);
-        fetchCryptoCategoriesData('nft', 'nft-data', 3);
-        fetchCryptoCategoriesData('metaverse', 'metaverse-data', 3);
-        fetchGoldData();
-      }, 300000); 
+      const chartColor = priceChange >= 0 ? '#10B981' : '#EF4444'; // Tailwind green-500 or red-500
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: Array.from({ length: data.length }, (_, i) => i + 1), // Dummy labels
+          datasets: [{
+            data: data,
+            borderColor: chartColor,
+            borderWidth: 1.5,
+            pointRadius: 0,
+            fill: false,
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              enabled: false
+            }
+          },
+          scales: {
+            x: {
+              display: false,
+              grid: {
+                display: false
+              }
+            },
+            y: {
+              display: false,
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function applyFiltersAndRender() {
+      const searchTerm = document.getElementById('search-input').value.toLowerCase();
+      const sortBy = document.getElementById('sort-by').value;
+      const priceChangeFilter = document.getElementById('price-change-filter').value;
+
+      filteredCoins = allCoinsData.filter(coin => {
+        const matchesSearch = coin.name.toLowerCase().includes(searchTerm) || coin.symbol.toLowerCase().includes(searchTerm);
+        return matchesSearch;
+      });
+
+      // Apply sorting
+      filteredCoins.sort((a, b) => {
+        let valA, valB;
+        switch (sortBy) {
+          case 'market_cap_desc':
+            valA = a.market_cap || 0;
+            valB = b.market_cap || 0;
+            return valB - valA;
+          case 'market_cap_asc':
+            valA = a.market_cap || 0;
+            valB = b.market_cap || 0;
+            return valA - valB;
+          case 'volume_desc':
+            valA = a.total_volume || 0;
+            valB = b.total_volume || 0;
+            return valB - valA;
+          case 'volume_asc':
+            valA = a.total_volume || 0;
+            valB = b.total_volume || 0;
+            return valA - valB;
+          case 'price_desc':
+            valA = a.current_price || 0;
+            valB = b.current_price || 0;
+            return valB - valA;
+          case 'price_asc':
+            valA = a.current_price || 0;
+            valB = b.current_price || 0;
+            return valA - valB;
+          default:
+            return 0;
+        }
+      });
+
+      currentPage = 1; // Reset halaman ke 1 setelah filter/sort
+      renderCryptoTable(filteredCoins);
+    }
+
+    function updatePaginationInfo(totalItems) {
+      const pageInfo = document.getElementById('page-info');
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      pageInfo.textContent = `Halaman ${currentPage} dari ${totalPages}`;
+
+      document.getElementById('prev-page').disabled = currentPage === 1;
+      document.getElementById('next-page').disabled = currentPage === totalPages || totalPages === 0;
+    }
+
+    // Event Listeners for Pagination
+    document.getElementById('prev-page').addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderCryptoTable(filteredCoins);
+      }
     });
+
+    document.getElementById('next-page').addEventListener('click', () => {
+      const totalPages = Math.ceil(filteredCoins.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderCryptoTable(filteredCoins);
+      }
+    });
+
+    // Event Listeners for Filters/Search
+    document.getElementById('apply-filters').addEventListener('click', applyFiltersAndRender);
+    document.getElementById('search-input').addEventListener('input', applyFiltersAndRender);
+    document.getElementById('sort-by').addEventListener('change', applyFiltersAndRender);
+    document.getElementById('price-change-filter').addEventListener('change', applyFiltersAndRender);
+
+    // Initial data load when the page is ready
+    document.addEventListener('DOMContentLoaded', fetchAllCryptoData);
+
+    // Refresh data every 5 minutes (300000 ms)
+    setInterval(fetchAllCryptoData, 300000);
+
+    // Update the "Lihat Detail di Market" button in index.html to point to all-assets.html
+    // This part should be in index.html's script or just directly modify the HTML
+    // For completeness, I'll add a note here.
+    // In index.html, change:
+    // <button onclick="window.location.href='index.html#market'" ...>Lihat Detail di Market</button>
+    // To:
+    // <a href="all-assets.html" class="mt-6 w-full py-3 bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-colors block text-center">Lihat Detail Semua Aset</a>
   </script>
 
 </body>
