@@ -192,7 +192,7 @@
         </div>
         <h2 class="text-4xl font-bold mb-3 gradient-text">Kalkulator Profit Crypto</h2>
         <p class="text-lg text-gray-600 dark:text-gray-300">
-          Hitung potensi keuntungan investasi kripto Anda dengan mudah.
+          Hitung potensi keuntungan investasi kripto Anda dengan detail.
         </p>
       </div>
 
@@ -217,6 +217,14 @@
           <label for="amount" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Jumlah Koin yang Dibeli</label>
           <input type="number" id="amount" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primary dark:bg-dark dark:border-gray-700 dark:text-light" placeholder="Contoh: 1000" value="0">
         </div>
+        <div>
+          <label for="buyFee" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Biaya Beli (%)</label>
+          <input type="number" id="buyFee" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primary dark:bg-dark dark:border-gray-700 dark:text-light" placeholder="Contoh: 0.1 (0.1%)" step="0.01" value="0.1">
+        </div>
+        <div>
+          <label for="sellFee" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Biaya Jual (%)</label>
+          <input type="number" id="sellFee" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primary dark:bg-dark dark:border-gray-700 dark:text-light" placeholder="Contoh: 0.1 (0.1%)" step="0.01" value="0.1">
+        </div>
 
         <button id="calculateBtn" class="w-full py-3 mt-6 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-lg hover:shadow-lg transition-all transform hover:-translate-y-1">
           Hitung Profit
@@ -227,20 +235,41 @@
         <h3 class="text-2xl font-bold text-primary mb-4 text-center">Hasil Perhitungan</h3>
         <div class="space-y-3">
           <p class="flex justify-between items-center text-lg">
-            <span>Modal Awal:</span>
+            <span>Modal Awal (Harga Beli):</span>
             <span id="initialInvestment" class="font-bold text-dark dark:text-light"></span>
           </p>
           <p class="flex justify-between items-center text-lg">
-            <span>Nilai Saat Ini:</span>
+            <span>Biaya Beli:</span>
+            <span id="calculatedBuyFee" class="font-bold text-dark dark:text-light"></span>
+          </p>
+          <p class="flex justify-between items-center text-lg">
+            <span>Total Modal Awal (termasuk Biaya):</span>
+            <span id="totalInitialInvestment" class="font-bold text-dark dark:text-light"></span>
+          </p>
+          <hr class="border-gray-300 dark:border-gray-600 my-2">
+          <p class="flex justify-between items-center text-lg">
+            <span>Nilai Saat Ini (Harga Jual):</span>
             <span id="currentValue" class="font-bold text-dark dark:text-light"></span>
           </p>
           <p class="flex justify-between items-center text-lg">
-            <span>Profit/Loss:</span>
-            <span id="profitLoss" class="font-bold"></span>
+            <span>Biaya Jual:</span>
+            <span id="calculatedSellFee" class="font-bold text-dark dark:text-light"></span>
           </p>
           <p class="flex justify-between items-center text-lg">
-            <span>Persentase Profit/Loss:</span>
+            <span>Total Pendapatan Bersih (setelah Biaya):</span>
+            <span id="netRevenue" class="font-bold text-dark dark:text-light"></span>
+          </p>
+          <hr class="border-gray-300 dark:border-gray-600 my-2">
+          <p class="flex justify-between items-center text-xl mt-4">
+            <span class="text-primary font-semibold">Profit/Loss Bersih:</span>
+            <span id="profitLoss" class="font-bold"></span>
+          </p>
+          <p class="flex justify-between items-center text-xl">
+            <span class="text-primary font-semibold">Persentase Profit/Loss:</span>
             <span id="profitLossPercent" class="font-bold"></span>
+          </p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-4 text-center">
+            * Perhitungan ini belum memperhitungkan pajak atau potensi biaya lain di luar biaya transaksi.
           </p>
         </div>
       </div>
@@ -405,27 +434,33 @@
     const buyPriceInput = document.getElementById('buyPrice');
     const sellPriceInput = document.getElementById('sellPrice');
     const amountInput = document.getElementById('amount');
+    const buyFeeInput = document.getElementById('buyFee');
+    const sellFeeInput = document.getElementById('sellFee');
     const calculateBtn = document.getElementById('calculateBtn');
     const resultsDiv = document.getElementById('results');
     const initialInvestmentSpan = document.getElementById('initialInvestment');
+    const calculatedBuyFeeSpan = document.getElementById('calculatedBuyFee');
+    const totalInitialInvestmentSpan = document.getElementById('totalInitialInvestment');
     const currentValueSpan = document.getElementById('currentValue');
+    const calculatedSellFeeSpan = document.getElementById('calculatedSellFee');
+    const netRevenueSpan = document.getElementById('netRevenue');
     const profitLossSpan = document.getElementById('profitLoss');
     const profitLossPercentSpan = document.getElementById('profitLossPercent');
     const buyPriceLabel = document.getElementById('buyPriceLabel');
     const sellPriceLabel = document.getElementById('sellPriceLabel');
 
-    function updateLabels() {
+    function updateLabelsAndSteps() {
       const selectedCurrency = currencySelect.value;
       if (selectedCurrency === 'USD') {
         buyPriceLabel.textContent = 'Harga Beli per Koin (USD)';
         sellPriceLabel.textContent = 'Harga Jual per Koin (USD)';
-        buyPriceInput.step = "0.01";
-        sellPriceInput.step = "0.01";
+        buyPriceInput.step = "0.000001"; // Lebih presisi untuk USD
+        sellPriceInput.step = "0.000001"; // Lebih presisi untuk USD
       } else { // IDR
         buyPriceLabel.textContent = 'Harga Beli per Koin (IDR)';
         sellPriceLabel.textContent = 'Harga Jual per Koin (IDR)';
-        buyPriceInput.step = "1"; // For IDR, typically whole numbers or fewer decimals
-        sellPriceInput.step = "1"; // For IDR, typically whole numbers or fewer decimals
+        buyPriceInput.step = "1"; 
+        sellPriceInput.step = "1"; 
       }
     }
 
@@ -433,35 +468,56 @@
       const buyPrice = parseFloat(buyPriceInput.value);
       const sellPrice = parseFloat(sellPriceInput.value);
       const amount = parseFloat(amountInput.value);
+      const buyFeeRate = parseFloat(buyFeeInput.value) / 100; // Konversi ke desimal
+      const sellFeeRate = parseFloat(sellFeeInput.value) / 100; // Konversi ke desimal
+      
       const selectedCurrency = currencySelect.value;
       let currencySymbol = selectedCurrency === 'USD' ? '$' : 'Rp';
       let locale = selectedCurrency === 'USD' ? 'en-US' : 'id-ID';
 
-      if (isNaN(buyPrice) || isNaN(sellPrice) || isNaN(amount) || amount <= 0) {
+      if (isNaN(buyPrice) || isNaN(sellPrice) || isNaN(amount) || isNaN(buyFeeRate) || isNaN(sellFeeRate) || amount <= 0) {
         resultsDiv.classList.add('hidden');
         alert('Mohon masukkan angka yang valid untuk semua kolom dan jumlah koin harus lebih dari nol.');
         return;
       }
 
-      const initialInvestment = buyPrice * amount;
-      const currentValue = sellPrice * amount;
-      const profitLoss = currentValue - initialInvestment;
-      const profitLossPercent = (initialInvestment !== 0) ? (profitLoss / initialInvestment) * 100 : 0; // Handle division by zero
+      // 1. Perhitungan Modal Awal
+      const initialInvestmentRaw = buyPrice * amount;
+      const calculatedBuyFee = initialInvestmentRaw * buyFeeRate;
+      const totalInitialInvestment = initialInvestmentRaw + calculatedBuyFee;
 
-      // Formatting numbers based on currency
+      // 2. Perhitungan Nilai Saat Ini
+      const currentValueRaw = sellPrice * amount;
+      const calculatedSellFee = currentValueRaw * sellFeeRate;
+      const netRevenue = currentValueRaw - calculatedSellFee; // Pendapatan bersih setelah biaya jual
+
+      // 3. Profit/Loss
+      const profitLoss = netRevenue - totalInitialInvestment;
+      const profitLossPercent = (totalInitialInvestment !== 0) ? (profitLoss / totalInitialInvestment) * 100 : 0;
+
+      // Fungsi untuk memformat angka dengan mata uang yang sesuai
       const formatNumber = (num) => {
         if (selectedCurrency === 'IDR') {
+          // Untuk IDR, kita mungkin ingin presisi lebih tinggi untuk angka kecil tapi di tampilan akhir dibulatkan
+          // Biarkan NumberFormat yang menangani pembulatan yang tepat
           return new Intl.NumberFormat(locale, { style: 'currency', currency: selectedCurrency, minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(num);
         } else { // USD
-          return new Intl.NumberFormat(locale, { style: 'currency', currency: selectedCurrency, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(num);
+          return new Intl.NumberFormat(locale, { style: 'currency', currency: selectedCurrency, minimumFractionDigits: 2, maximumFractionDigits: 6 }).format(num); // Hingga 6 desimal untuk USD
         }
       };
 
-      initialInvestmentSpan.textContent = formatNumber(initialInvestment);
-      currentValueSpan.textContent = formatNumber(currentValue);
+      // Tampilkan Hasil
+      initialInvestmentSpan.textContent = formatNumber(initialInvestmentRaw);
+      calculatedBuyFeeSpan.textContent = formatNumber(calculatedBuyFee);
+      totalInitialInvestmentSpan.textContent = formatNumber(totalInitialInvestment);
+      currentValueSpan.textContent = formatNumber(currentValueRaw);
+      calculatedSellFeeSpan.textContent = formatNumber(calculatedSellFee);
+      netRevenueSpan.textContent = formatNumber(netRevenue);
+      
       profitLossSpan.textContent = formatNumber(profitLoss);
       profitLossPercentSpan.textContent = `${profitLossPercent.toFixed(2)}%`;
 
+      // Atur warna profit/loss
       if (profitLoss > 0) {
         profitLossSpan.classList.remove('text-red-500', 'text-dark', 'dark:text-light');
         profitLossSpan.classList.add('text-green-500');
@@ -482,13 +538,12 @@
       resultsDiv.classList.remove('hidden');
     }
 
-    currencySelect.addEventListener('change', updateLabels);
+    currencySelect.addEventListener('change', updateLabelsAndSteps);
     calculateBtn.addEventListener('click', calculateProfit);
     
-    // Set initial labels when page loads
+    // Set initial labels and clear results when page loads
     document.addEventListener('DOMContentLoaded', () => {
-        updateLabels();
-        // Clear previous results on page load
+        updateLabelsAndSteps();
         resultsDiv.classList.add('hidden'); 
     });
   </script>
