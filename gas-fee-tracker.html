@@ -41,6 +41,7 @@
       }
     }
   </script>
+
   <style>
     .gradient-text {
       background: linear-gradient(90deg, #00f5d4, #7b2cbf, #ff8906);
@@ -52,16 +53,16 @@
 
     /* CSS Tambahan untuk Hamburger */
     .mobile-menu {
-      display: none; /* Akan diubah oleh JS saat aktif */
+      display: none;
       position: absolute;
-      top: 100%; /* Di bawah header */
+      top: 100%;
       left: 0;
       width: 100%;
-      background-color: var(--dark-bg, rgba(15, 14, 23, 0.9)); /* Menggunakan variabel CSS atau fallback */
+      background-color: var(--dark-bg, rgba(15, 14, 23, 0.9));
       backdrop-filter: blur(8px);
       box-shadow: 0 8px 16px rgba(0,0,0,0.2);
       padding: 1rem 0;
-      z-index: 40; /* Di bawah header tetap, tapi di atas konten */
+      z-index: 40;
       flex-direction: column;
       align-items: center;
       transition: all 0.3s ease-in-out;
@@ -80,15 +81,15 @@
     .mobile-menu a {
       display: block;
       padding: 0.75rem 1.5rem;
-      color: var(--light-text, #fffffe); /* Menggunakan variabel CSS atau fallback */
+      color: var(--light-text, #fffffe);
       font-weight: 500;
       width: 100%;
       text-align: center;
     }
 
     .mobile-menu a:hover {
-      color: var(--primary-color, #00f5d4); /* Menggunakan variabel CSS atau fallback */
-      background-color: rgba(255,255,255,0.1); /* Sedikit latar belakang saat hover */
+      color: var(--primary-color, #00f5d4);
+      background-color: rgba(255,255,255,0.1);
     }
 
     /* Animasi Hamburger Icon */
@@ -97,7 +98,7 @@
       width: 24px;
       height: 3px;
       margin: 5px auto;
-      background-color: currentColor; /* Akan mengikuti warna teks dark/light */
+      background-color: currentColor;
       transition: all 0.3s ease-in-out;
     }
 
@@ -118,8 +119,8 @@
         --primary-color: #00f5d4;
     }
     html:not(.dark) {
-        --dark-bg: #ffffff; /* for light mode mobile menu background */
-        --light-text: #0f0e17; /* for light mode mobile menu text */
+        --dark-bg: #ffffff;
+        --light-text: #0f0e17;
         --primary-color: #00f5d4;
     }
   </style>
@@ -260,8 +261,8 @@
 
       <div id="apiError" class="mt-6 p-4 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg hidden">
         <p class="font-bold">Error:</p>
-        <p>Gagal memuat data harga gas. Mohon coba lagi nanti atau periksa koneksi internet Anda.</p>
-        <p class="text-xs mt-2">Pastikan API Key Etherscan Anda sudah benar dan aktif. Cek konsol browser (F12) untuk detail error.</p>
+        <p id="errorMessageDetail">Gagal memuat data harga gas. Mohon coba lagi nanti atau periksa koneksi internet Anda.</p>
+        <p class="text-xs mt-2">Pastikan API Key Etherscan Anda sudah benar dan aktif. Periksa konsol browser (F12) untuk detail error.</p>
       </div>
     </div>
   </section>
@@ -435,6 +436,7 @@
     const averageCostSpan = document.getElementById('averageCost');
     const lowCostSpan = document.getElementById('lowCost');
     const apiErrorDiv = document.getElementById('apiError');
+    const errorMessageDetail = document.getElementById('errorMessageDetail'); // Elemen untuk detail pesan error
 
     // Store fetched data globally
     let ethPriceUSD = 0;
@@ -461,29 +463,60 @@
     };
 
     async function fetchGasPrices() {
+      console.log('Mencoba mengambil data gas fee dan harga ETH...');
       apiErrorDiv.classList.add('hidden'); // Sembunyikan pesan error sebelumnya
+      errorMessageDetail.textContent = 'Gagal memuat data harga gas. Mohon coba lagi nanti atau periksa koneksi internet Anda.'; // Reset pesan error
+
       try {
-        // Menggunakan API Key Etherscan Anda
-        const gasResponse = await fetch('https://api.etherscan.io/api?module=gastracker&action=gasestimator&apikey=VPZJ113V541UJ4DR8THDZGMUB4Z8IWI3SB'); 
-        const ethPriceResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd,idr');
+        // Menggunakan API Key Etherscan Anda. PASTIKAN INI VALID DAN AKTIF!
+        const etherscanApiKey = 'VPZJ113V541UJ4DR8THDZGMUB4Z8IWI3SB'; //
+        const gasResponsePromise = fetch(`https://api.etherscan.io/api?module=gastracker&action=gasestimator&apikey=${etherscanApiKey}`); 
+        const ethPriceResponsePromise = fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd,idr');
+
+        // Tunggu kedua permintaan selesai secara paralel
+        const [gasResponse, ethPriceResponse] = await Promise.all([gasResponsePromise, ethPriceResponsePromise]);
 
         if (!gasResponse.ok || !ethPriceResponse.ok) {
-          throw new Error('Gagal mengambil data dari API. Status: ' + gasResponse.status + ', ' + ethPriceResponse.status);
+          const gasErrorText = await gasResponse.text();
+          const ethErrorText = await ethPriceResponse.text();
+          console.error('HTTP Error fetching data:');
+          console.error('Gas API Status:', gasResponse.status, 'Response:', gasErrorText);
+          console.error('ETH Price API Status:', ethPriceResponse.status, 'Response:', ethErrorText);
+          
+          let errorMsg = `HTTP Error! Status Gas: ${gasResponse.status}. Status ETH: ${ethPriceResponse.status}. `;
+          if (gasResponse.status === 403 || gasResponse.status === 401) errorMsg += "Etherscan API Key mungkin tidak valid atau akses ditolak. ";
+          if (ethPriceResponse.status === 429) errorMsg += "CoinGecko Rate Limit terlampaui. Coba lagi nanti. ";
+          if (gasResponse.status === 429) errorMsg += "Etherscan Rate Limit terlampaui. Coba lagi nanti. ";
+
+          throw new Error(errorMsg);
         }
 
         const gasData = await gasResponse.json();
         const ethPriceData = await ethPriceResponse.json();
 
-        if (gasData.status === '1' && gasData.message === 'OK' && ethPriceData.ethereum) {
+        console.log('Data Mentah Gas API (Etherscan):', gasData);
+        console.log('Data Mentah ETH Price API (CoinGecko):', ethPriceData);
+
+        // Periksa apakah respons dari Etherscan API Key bermasalah (misalnya status 0, pesan error spesifik)
+        if (gasData.status === '0' && gasData.message === 'NOTOK') {
+             // Contoh pesan dari Etherscan jika API Key salah: "Invalid API Key"
+            throw new Error(`Etherscan API Error: ${gasData.result || 'Unknown error. Check API Key.'}`);
+        }
+
+
+        // Pastikan struktur data valid sebelum mengaksesnya
+        if (gasData.status === '1' && gasData.message === 'OK' && gasData.result && ethPriceData.ethereum) {
           gasPrices = {
             fast: parseFloat(gasData.result.FastGasPrice),
             average: parseFloat(gasData.result.ProposeGasPrice),
             low: parseFloat(gasData.result.SafeGasPrice)
           };
 
-          const fastTime = gasData.result.FastGasPriceTime || 'N/A';
-          const averageTime = gasData.result.ProposeGasPriceTime || 'N/A';
-          const lowTime = gasData.result.SafeGasPriceTime || 'N/A';
+          // Beberapa API Etherscan tidak selalu memberikan FastGasPriceTime, dll.
+          // Jadi pastikan untuk handle kasus undefined
+          const fastTime = gasData.result.FastGasPriceTime !== undefined ? gasData.result.FastGasPriceTime : 'N/A';
+          const averageTime = gasData.result.ProposeGasPriceTime !== undefined ? gasData.result.ProposeGasPriceTime : 'N/A';
+          const lowTime = gasData.result.SafeGasPriceTime !== undefined ? gasData.result.SafeGasPriceTime : 'N/A';
           
           ethPriceUSD = ethPriceData.ethereum.usd;
           ethPriceIDR = ethPriceData.ethereum.idr;
@@ -494,13 +527,15 @@
           averageTimeSpan.textContent = `~${averageTime} detik`;
           lowTimeSpan.textContent = `~${lowTime} detik`;
         } else {
-          // Log error API response untuk debugging
-          console.error('API Error Response:', gasData, ethPriceData);
-          throw new Error('Format data API tidak valid atau data tidak ditemukan.');
+          console.error('API Response Problem: Invalid format or data not found.');
+          console.error('Gas API Response:', gasData);
+          console.error('ETH Price API Response:', ethPriceData);
+          throw new Error('Format data API tidak valid atau data tidak ditemukan pada respons.');
         }
       } catch (error) {
         console.error('Error fetching gas data:', error);
         apiErrorDiv.classList.remove('hidden'); // Tampilkan pesan error
+        errorMessageDetail.textContent = `Gagal memuat data harga gas. Detail: ${error.message}. Mohon coba lagi nanti atau periksa koneksi internet Anda.`;
         // Set default text jika gagal memuat data
         fastGasSpan.textContent = '-- Gwei';
         averageGasSpan.textContent = '-- Gwei';
@@ -533,17 +568,21 @@
     function calculateTransactionCost() {
       const gasLimit = parseInt(gasLimitInput.value);
       if (isNaN(gasLimit) || gasLimit <= 0) {
-        alert('Mohon masukkan Batas Gas (Gas Limit) yang valid dan positif.');
         costResultsDiv.classList.add('hidden');
+        apiErrorDiv.classList.remove('hidden');
+        errorMessageDetail.textContent = 'Mohon masukkan Batas Gas (Gas Limit) yang valid dan positif untuk perhitungan biaya.';
         return;
       }
 
       // Pastikan data gas dan harga ETH sudah terload
       if (Object.keys(gasPrices).length === 0 || ethPriceUSD === 0 || ethPriceIDR === 0) {
-        alert('Data harga gas atau harga ETH belum tersedia. Mohon tunggu beberapa saat dan coba lagi.');
+        apiErrorDiv.classList.remove('hidden');
+        errorMessageDetail.textContent = 'Data harga gas atau harga ETH belum tersedia untuk perhitungan biaya. Mohon tunggu beberapa saat.';
         costResultsDiv.classList.add('hidden');
         return;
       }
+
+      apiErrorDiv.classList.add('hidden'); // Sembunyikan error jika perhitungan berhasil
 
       const selectedCurrency = currencySelect.value;
       const currentEthPrice = selectedCurrency === 'USD' ? ethPriceUSD : ethPriceIDR;
