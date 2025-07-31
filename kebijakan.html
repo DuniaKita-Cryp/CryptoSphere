@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kebijakan Privasi | CryptoSphere</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        fontFamily: {
+          sans: ['Space Grotesk', 'sans-serif'],
+        },
+        extend: {
+          colors: {
+            primary: "#00f5d4",
+            secondary: "#7b2cbf",
+            dark: "#0f0e17",
+            light: "#fffffe",
+            card: "#1e1e2e",
+            accent: "#ff8906"
+          },
+          animation: {
+            'gradient-x': 'gradient-x 8s ease infinite',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            'gradient-x': {
+              '0%, 100%': { 'background-position': '0% 50%' },
+              '50%': { 'background-position': '100% 50%' },
+            },
+            'float': {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .gradient-text {
+      background: linear-gradient(90deg, #00f5d4, #7b2cbf, #ff8906);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-x 8s ease infinite;
+    }
+
+    /* CSS Tambahan untuk Hamburger */
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: var(--dark-bg, rgba(15, 14, 23, 0.9));
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      padding: 1rem 0;
+      z-index: 40;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s ease-in-out;
+      transform: translateY(-10px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .mobile-menu.active {
+      display: flex;
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      color: var(--light-text, #fffffe);
+      font-weight: 500;
+      width: 100%;
+      text-align: center;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--primary-color, #00f5d4);
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    /* Animasi Hamburger Icon */
+    .mobile-menu-icon .bar {
+      display: block;
+      width: 24px;
+      height: 3px;
+      margin: 5px auto;
+      background-color: currentColor;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .mobile-menu-icon.open .bar:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .mobile-menu-icon.open .bar:nth-child(2) {
+      opacity: 0;
+    }
+    .mobile-menu-icon.open .bar:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Tailwind CSS variables for dynamic colors */
+    html.dark {
+        --dark-bg: #0f0e17;
+        --light-text: #fffffe;
+        --primary-color: #00f5d4;
+    }
+    html:not(.dark) {
+        --dark-bg: #ffffff;
+        --light-text: #0f0e17;
+        --primary-color: #00f5d4;
+    }
+
+    /* Custom styles for policy page lists */
+    .policy-list li {
+        margin-bottom: 0.5rem;
+        padding-left: 1.5rem;
+        position: relative;
+    }
+    .policy-list li::before {
+        content: "•";
+        color: var(--primary-color);
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1.5em;
+        position: absolute;
+        left: 0;
+    }
+  </style>
+</head>
+<body class="bg-light text-dark dark:bg-dark dark:text-light font-sans scroll-smooth transition-colors duration-300">
+  <div class="fixed inset-0 overflow-hidden -z-10">
+    <div class="absolute top-1/4 left-1/4 w-4 h-4 rounded-full bg-primary opacity-20 animate-float"></div>
+    <div class="absolute top-1/3 right-1/4 w-6 h-6 rounded-full bg-secondary opacity-15 animate-float" style="animation-delay: 1s;"></div>
+    <div class="absolute bottom-1/4 left-1/3 w-8 h-8 rounded-full bg-accent opacity-10 animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-1/3 right-1/3 w-5 h-5 rounded-full bg-primary opacity-15 animate-float" style="animation-delay: 3s;"></div>
+  </div>
+
+  <header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-dark/80 backdrop-blur-md shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center relative">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-primary">
+          <path fill-rule="evenodd" d="M12 21.75c5.385 0 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25 2.25 6.615 2.25 12s4.365 9.75 9.75 9.75zM10.5 7.963a1.5 1.5 0 00-1.5 1.5v5.074a1.5 1.5 0 001.5 1.5h5.074a1.5 1.5 0 001.5-1.5v-5.074a1.5 1.5 0 00-1.5-1.5H10.5z" clip-rule="evenodd" />
+        </svg>
+        <h1 class="text-2xl font-bold gradient-text">CryptoSphere</h1>
+      </div>
+      
+      <nav id="desktop-nav" class="hidden md:flex items-center space-x-8">
+        <a href="index.html#home" class="font-medium hover:text-primary transition-colors">Beranda</a>
+        <a href="index.html#learn" class="font-medium hover:text-primary transition-colors">Belajar</a>
+        <a href="index.html#market" class="font-medium hover:text-primary transition-colors">Market</a>
+        <a href="index.html#tools" class="font-medium hover:text-primary transition-colors">Tools</a>
+        <a href="index.html#community" class="font-medium hover:text-primary transition-colors">Komunitas</a>
+        <a href="career.html" class="font-medium hover:text-primary transition-colors">Karir</a>
+        <button id="theme-toggle" class="p-2 rounded-full bg-white dark:bg-card shadow-md" aria-label="Toggle dark mode">
+          <svg id="moon-icon" class="w-5 h-5 text-dark dark:text-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg id="sun-icon" class="w-5 h-5 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+      </nav>
+      
+      <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-dark dark:text-light mobile-menu-icon" aria-label="Open mobile menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <nav id="mobile-menu" class="mobile-menu">
+        <a href="index.html#home" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Beranda</a>
+        <a href="index.html#learn" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Belajar</a>
+        <a href="index.html#market" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Market</a>
+        <a href="index.html#tools" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Tools</a>
+        <a href="index.html#community" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Komunitas</a>
+        <a href="career.html" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Karir</a>
+        <button id="mobile-theme-toggle" class="p-2 mt-4 rounded-full bg-white dark:bg-card shadow-md md:hidden" aria-label="Toggle dark mode">
+          <svg id="mobile-moon-icon" class="w-5 h-5 text-dark dark:text-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg id="mobile-sun-icon" class="w-5 h-5 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <section id="privacy-hero" class="min-h-screen flex items-center justify-center px-6 pt-24 pb-16 bg-gradient-to-br from-primary/5 to-secondary/5">
+    <div class="max-w-6xl mx-auto text-center">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+        <span class="gradient-text">Kebijakan Privasi</span><br>
+        Keamanan Data Anda Adalah Prioritas Kami
+      </h1>
+      <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto">
+        Kami berkomitmen penuh untuk melindungi privasi dan keamanan informasi pribadi Anda saat menggunakan layanan CryptoSphere.
+      </p>
+    </div>
+  </section>
+
+  ---
+
+  <section id="policy-content" class="py-20 px-6 bg-light dark:bg-dark">
+    <div class="max-w-7xl mx-auto prose dark:prose-invert lg:prose-lg">
+      <h2>Pendahuluan</h2>
+      <p>
+        CryptoSphere berkomitmen untuk melindungi privasi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan melindungi informasi pribadi Anda saat Anda mengunjungi dan menggunakan situs web kami, layanan, dan aplikasi terkait (secara kolektif, "Layanan"). Dengan mengakses atau menggunakan Layanan kami, Anda menyetujui praktik yang dijelaskan dalam Kebijakan Privasi ini.
+      </p>
+
+      <h2>Informasi yang Kami Kumpulkan</h2>
+      <p>Kami dapat mengumpulkan berbagai jenis informasi sehubungan dengan penggunaan Layanan kami oleh Anda, termasuk:</p>
+      <h3 class="text-xl font-semibold mt-6 mb-3 text-primary">1. Informasi Pribadi</h3>
+      <ul class="policy-list">
+        <li>Informasi Identifikasi: Nama, alamat email, nomor telepon, alamat domisili, tanggal lahir, dan informasi identifikasi lainnya yang Anda berikan saat mendaftar akun atau berinteraksi dengan layanan kami.</li>
+        <li>Informasi Keuangan (jika berlaku): Detail pembayaran, riwayat transaksi, atau informasi terkait aset kripto yang mungkin Anda berikan saat menggunakan fitur tertentu (misalnya, kalkulator portofolio atau transaksi simulasi).</li>
+        <li>Informasi Demografis: Usia, jenis kelamin, preferensi, dan minat.</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold mt-6 mb-3 text-primary">2. Data Penggunaan</h3>
+      <p>Kami secara otomatis mengumpulkan informasi tentang bagaimana Anda mengakses dan menggunakan Layanan, termasuk:</p>
+      <ul class="policy-list">
+        <li>Data Log: Alamat IP, jenis browser, halaman yang Anda kunjungi, waktu dan tanggal akses, waktu yang dihabiskan di halaman tersebut, dan data diagnostik lainnya.</li>
+        <li>Informasi Perangkat: Jenis perangkat, sistem operasi, pengenal perangkat unik, dan data jaringan seluler.</li>
+        <li>Data Lokasi: Jika Anda mengaktifkan layanan lokasi pada perangkat Anda, kami dapat mengumpulkan informasi tentang lokasi geografis Anda.</li>
+        <li>Cookie dan Teknologi Pelacakan: Kami menggunakan cookie dan teknologi pelacakan serupa untuk melacak aktivitas di Layanan kami dan menyimpan informasi tertentu.</li>
+      </ul>
+
+      <h2>Bagaimana Kami Menggunakan Informasi Anda</h2>
+      <p>Kami menggunakan informasi yang kami kumpulkan untuk berbagai tujuan, termasuk:</p>
+      <ul class="policy-list">
+        <li>Menyediakan dan memelihara Layanan kami.</li>
+        <li>Mengelola akun Anda dan mempersonalisasi pengalaman Anda.</li>
+        <li>Meningkatkan, mempersonalisasi, dan memperluas Layanan kami.</li>
+        <li>Mengembangkan fitur, produk, dan layanan baru.</li>
+        <li>Menganalisis bagaimana Anda menggunakan Layanan kami.</li>
+        <li>Mengirimkan komunikasi, seperti pembaruan, buletin, dan promosi.</li>
+        <li>Memproses transaksi dan mengelola pesanan (jika ada).</li>
+        <li>Mendeteksi, mencegah, dan mengatasi penipuan atau masalah keamanan.</li>
+        <li>Mematuhi kewajiban hukum dan peraturan.</li>
+      </ul>
+
+      <h2>Pengungkapan Informasi Anda</h2>
+      <p>Kami tidak akan menjual atau menyewakan informasi pribadi Anda kepada pihak ketiga. Kami dapat mengungkapkan informasi Anda dalam situasi berikut:</p>
+      <ul class="policy-list">
+        <li>Penyedia Layanan: Dengan penyedia layanan pihak ketiga yang membantu kami mengoperasikan Layanan kami (misalnya, hosting, analitik, layanan email).</li>
+        <li>Kewajiban Hukum: Untuk mematuhi kewajiban hukum, menanggapi panggilan pengadilan, atau perintah pengadilan, atau untuk menanggapi permintaan pemerintah.</li>
+        <li>Perlindungan Hak: Untuk melindungi hak, properti, atau keamanan CryptoSphere, pengguna kami, atau publik.</li>
+        <li>Transfer Bisnis: Sehubungan dengan merger, akuisisi, restrukturisasi, atau penjualan aset, di mana informasi pribadi dapat menjadi bagian dari aset yang ditransfer.</li>
+        <li>*Dengan Persetujuan Anda: Dengan persetujuan eksplisit Anda.</li>
+      </ul>
+
+      <h2>Keamanan Data</h2>
+      <p>
+        Kami mengambil langkah-langkah keamanan yang wajar untuk melindungi informasi pribadi Anda dari akses, penggunaan, atau pengungkapan yang tidak sah. Namun, tidak ada metode transmisi melalui internet atau penyimpanan elektronik yang 100% aman. Oleh karena itu, kami tidak dapat menjamin keamanan mutlak informasi Anda.
+      </p>
+
+      <h2>Retensi Data</h2>
+      <p>
+        Kami akan menyimpan informasi pribadi Anda selama diperlukan untuk tujuan yang ditetapkan dalam Kebijakan Privasi ini, kecuali periode retensi yang lebih lama diwajibkan atau diizinkan oleh hukum.
+      </p>
+
+      <h2>Hak-Hak Anda</h2>
+      <p>Bergantung pada lokasi Anda, Anda mungkin memiliki hak-hak tertentu sehubungan dengan informasi pribadi Anda, termasuk hak untuk:</p>
+      <ul class="policy-list">
+        <li>Mengakses informasi pribadi yang kami pegang tentang Anda.</li>
+        <li>Memperbaiki informasi pribadi yang tidak akurat.</li>
+        <li>Meminta penghapusan informasi pribadi Anda.</li>
+        <li>Menarik persetujuan Anda kapan saja (jika pemrosesan didasarkan pada persetujuan).</li>
+        <li>Mengajukan keluhan kepada otoritas perlindungan data yang relevan.</li>
+      </ul>
+
+      <h2>Perubahan pada Kebijakan Privasi Ini</h2>
+      <p>
+        Kami dapat memperbarui Kebijakan Privasi kami dari waktu ke waktu. Kami akan memberi tahu Anda tentang setiap perubahan dengan memposting Kebijakan Privasi baru di halaman ini dan memperbarui "Tanggal Efektif" di bagian atas Kebijakan Privasi ini. Anda disarankan untuk meninjau Kebijakan Privasi ini secara berkala untuk setiap perubahan.
+      </p>
+
+      <h2>Hubungi Kami</h2>
+      <p>
+        Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi kami:
+      </p>
+      <ul class="policy-list">
+        <li>Melalui email: <a href="mailto:privacy@cryptosphere.id" class="text-primary hover:underline">privacy@cryptosphere.id</a></li>
+        <li>Melalui formulir kontak di situs web kami.</li>
+      </ul>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-8">
+        Tanggal Efektif: 31 Juli 2025
+      </p>
+    </div>
+  </section>
+
+  ---
+
+  <section id="privacy-cta" class="py-20 px-6 bg-card dark:bg-dark">
+    <div class="max-w-4xl mx-auto bg-gradient-to-r from-primary to-secondary rounded-2xl shadow-xl p-10 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">Kepercayaan Anda Adalah Fondasi Kami</h2>
+      <p class="text-white/80 mb-8 max-w-2xl mx-auto">
+        Kami membangun CryptoSphere dengan komitmen terhadap transparansi dan keamanan data Anda.
+      </p>
+      <a href="index.html" class="px-6 py-3 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transition-colors inline-block">
+        Kembali ke Beranda
+      </a>
+    </div>
+  </section>
+
+  <footer class="bg-dark dark:bg-card py-16 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid md:grid-cols-4 gap-12">
+        <div>
+          <div class="flex items-center space-x-2 mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-primary">
+              <path fill-rule="evenodd" d="M12 21.75c5.385 0 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25 2.25 6.615 2.25 12s4.365 9.75 9.75 9.75zM10.5 7.963a1.5 1.5 0 00-1.5 1.5v5.074a1.5 1.5 0 001.5 1.5h5.074a1.5 1.5 0 001.5-1.5v-5.074a1.5 1.5 0 00-1.5-1.5H10.5z" clip-rule="evenodd" />
+            </svg>
+            <h2 class="text-2xl font-bold text-white">CryptoSphere</h2>
+          </div>
+          <p class="text-gray-400 mb-6">
+            Platform edukasi cryptocurrency terkemuka di Indonesia.
+          </p>
+          <div class="flex space-x-4">
+            <a href="https://twitter.com/CryptoSphere" target="_blank" class="text-gray-400 hover:text-white" aria-label="Twitter">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+              </svg>
+            </a>
+            <a href="https://instagram.com/CryptoSphere" target="_blank" class="text-gray-400 hover:text-white" aria-label="Instagram">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+            <a href="https://linkedin.com/company/CryptoSphere" target="_blank" class="text-gray-400 hover:text-white" aria-label="LinkedIn">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Edukasi</h3>
+          <ul class="space-y-3">
+            <li><a href="pemula.html" class="text-gray-400 hover:text-primary transition-colors">Pemula</a></li>
+            <li><a href="menengah.html" class="text-gray-400 hover:text-primary transition-colors">Analisis Teknikal</a></li>
+            <li><a href="mahir.html" class="text-gray-400 hover:text-primary transition-colors">Analisis On-Chain</a></li>
+            <li><a href="all_assets.html" class="text-gray-400 hover:text-primary transition-colors">Token</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Tools</h3>
+          <ul class="space-y-3">
+            <li><a href="profit-calculator.html" class="text-gray-400 hover:text-primary transition-colors">Kalkulator Profit</a></li>
+            <li><a href="coba.html" class="text-gray-400 hover:text-primary transition-colors">Portfolio Tracker</a></li>
+            <li><a href="gas-fee-tracker.html" class="text-gray-400 hover:text-primary transition-colors">Gas Fee Tracker</a></li>
+            <li><a href="market.html" class="text-gray-400 hover:text-primary transition-colors">Market Cap Calculator</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Perusahaan</h3>
+          <ul class="space-y-3">
+            <li><a href="about.html" class="text-gray-400 hover:text-primary transition-colors">Tentang Kami</a></li>
+            <li><a href="karir.html" class="text-gray-400 hover:text-primary transition-colors">Karir</a></li>
+            <li><a href="kebijakan.html" class="text-primary hover:text-primary transition-colors">Kebijakan Privasi</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Syarat & Ketentuan</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kontak</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+        <p class="text-gray-500">© 2025 CryptoSphere. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Dark Mode Toggle (Desktop)
+    const themeToggle = document.getElementById('theme-toggle');
+    const moonIcon = document.getElementById('moon-icon');
+    const sunIcon = document.getElementById('sun-icon');
+
+    // Dark Mode Toggle (Mobile)
+    const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+    const mobileMoonIcon = document.getElementById('mobile-moon-icon');
+    const mobileSunIcon = document.getElementById('mobile-sun-icon');
+
+    function applyTheme(isDark) {
+        if (isDark) {
+            document.documentElement.classList.add('dark');
+            if (moonIcon) moonIcon.classList.add('hidden');
+            if (sunIcon) sunIcon.classList.remove('hidden');
+            if (mobileMoonIcon) mobileMoonIcon.classList.add('hidden');
+            if (mobileSunIcon) mobileSunIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            if (moonIcon) moonIcon.classList.remove('hidden');
+            if (sunIcon) sunIcon.classList.add('hidden');
+            if (mobileMoonIcon) mobileMoonIcon.classList.remove('hidden');
+            if (mobileSunIcon) mobileSunIcon.classList.add('hidden');
+        }
+    }
+
+    function setInitialTheme() {
+        const savedTheme = localStorage.getItem('color-theme');
+
+        if (savedTheme) {
+            applyTheme(savedTheme === 'dark');
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            applyTheme(true);
+        } else {
+            applyTheme(false);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', setInitialTheme);
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+        const savedTheme = localStorage.getItem('color-theme');
+        if (!savedTheme) {
+            applyTheme(event.matches);
+        }
+    });
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            const isCurrentlyDark = document.documentElement.classList.contains('dark');
+            const newThemeIsDark = !isCurrentlyDark;
+            applyTheme(newThemeIsDark);
+            localStorage.setItem('color-theme', newThemeIsDark ? 'dark' : 'light');
+        });
+    }
+    if (mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', function() {
+            const isCurrentlyDark = document.documentElement.classList.contains('dark');
+            const newThemeIsDark = !isCurrentlyDark;
+            applyTheme(newThemeIsDark);
+            localStorage.setItem('color-theme', newThemeIsDark ? 'dark' : 'light');
+        });
+    }
+
+    // Hamburger Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenuButton.classList.toggle('open');
+            mobileMenu.classList.toggle('active');
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuButton.classList.remove('open');
+                mobileMenu.classList.remove('active');
+            });
+        });
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+  </script>
+
+</body>
+</html>
