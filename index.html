@@ -54,16 +54,16 @@
 
     /* CSS Tambahan untuk Hamburger */
     .mobile-menu {
-      display: none; /* Akan diubah oleh JS saat aktif */
+      display: none;
       position: absolute;
-      top: 100%; /* Di bawah header */
+      top: 100%;
       left: 0;
       width: 100%;
-      background-color: var(--dark-bg, rgba(15, 14, 23, 0.9)); /* Menggunakan variabel CSS atau fallback */
+      background-color: var(--dark-bg, rgba(15, 14, 23, 0.9));
       backdrop-filter: blur(8px);
       box-shadow: 0 8px 16px rgba(0,0,0,0.2);
       padding: 1rem 0;
-      z-index: 40; /* Di bawah header tetap, tapi di atas konten */
+      z-index: 40;
       flex-direction: column;
       align-items: center;
       transition: all 0.3s ease-in-out;
@@ -82,15 +82,15 @@
     .mobile-menu a {
       display: block;
       padding: 0.75rem 1.5rem;
-      color: var(--light-text, #fffffe); /* Menggunakan variabel CSS atau fallback */
+      color: var(--light-text, #fffffe);
       font-weight: 500;
       width: 100%;
       text-align: center;
     }
 
     .mobile-menu a:hover {
-      color: var(--primary-color, #00f5d4); /* Menggunakan variabel CSS atau fallback */
-      background-color: rgba(255,255,255,0.1); /* Sedikit latar belakang saat hover */
+      color: var(--primary-color, #00f5d4);
+      background-color: rgba(255,255,255,0.1);
     }
 
     /* Animasi Hamburger Icon */
@@ -99,7 +99,7 @@
       width: 24px;
       height: 3px;
       margin: 5px auto;
-      background-color: currentColor; /* Akan mengikuti warna teks dark/light */
+      background-color: currentColor;
       transition: all 0.3s ease-in-out;
     }
 
@@ -120,8 +120,8 @@
         --primary-color: #00f5d4;
     }
     html:not(.dark) {
-        --dark-bg: #ffffff; /* for light mode mobile menu background */
-        --light-text: #0f0e17; /* for light mode mobile menu text */
+        --dark-bg: #ffffff;
+        --light-text: #0f0e17;
         --primary-color: #00f5d4;
     }
   </style>
@@ -147,6 +147,7 @@
         <a href="#learn" class="font-medium hover:text-primary transition-colors">Belajar</a>
         <a href="#market" class="font-medium hover:text-primary transition-colors">Market</a>
         <a href="#tools" class="font-medium hover:text-primary transition-colors">Tools</a>
+        <a href="#news" class="font-medium hover:text-primary transition-colors">Berita</a>
         <a href="#community" class="font-medium hover:text-primary transition-colors">Komunitas</a>
         
         <button id="theme-toggle" class="p-2 rounded-full bg-white dark:bg-card shadow-md" aria-label="Toggle dark mode">
@@ -170,6 +171,7 @@
         <a href="#learn" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Belajar</a>
         <a href="#market" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Market</a>
         <a href="#tools" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Tools</a>
+        <a href="#news" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Berita</a>
         <a href="#community" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Komunitas</a>
         <button id="mobile-theme-toggle" class="p-2 mt-4 rounded-full bg-white dark:bg-card shadow-md md:hidden" aria-label="Toggle dark mode">
           <svg id="mobile-moon-icon" class="w-5 h-5 text-dark dark:text-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -268,7 +270,7 @@
                 Beli Crypto Pertama
               </li>
             </ul>
-            <a href="pemula.html" class="inline-block w-full py-3 px-6 text-center bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-colors">
+            <a href="#learn" class="inline-block w-full py-3 px-6 text-center bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-colors">
               Mulai Jalur Ini
             </a>
           </div>
@@ -308,7 +310,7 @@
                 Memahami NFT & Metaverse
               </li>
             </ul>
-            <a href="menengah.html" class="inline-block w-full py-3 px-6 text-center bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">
+            <a href="#learn" class="inline-block w-full py-3 px-6 text-center bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">
               Mulai Jalur Ini
             </a>
           </div>
@@ -348,7 +350,7 @@
                 Manajemen Risiko
               </li>
             </ul>
-            <a href="mahir.html" class="inline-block w-full py-3 px-6 text-center bg-purple-500 text-white font-medium rounded-lg hover:bg-purple-600 transition-colors">
+            <a href="#learn" class="inline-block w-full py-3 px-6 text-center bg-purple-500 text-white font-medium rounded-lg hover:bg-purple-600 transition-colors">
               Mulai Jalur Ini
             </a>
           </div>
@@ -403,7 +405,7 @@
         </div>
         
         <div class="p-6 border-t border-gray-200 dark:border-gray-700 text-center">
-          <a href="all_assets.html" class="inline-block px-6 py-3 bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-colors">
+          <a href="#market" class="inline-block px-6 py-3 bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-colors">
             Lihat Semua Aset
           </a>
         </div>
@@ -431,7 +433,7 @@
           <p class="text-gray-600 dark:text-gray-300 mb-6">
             Hitung potensi keuntungan investasi crypto Anda berdasarkan harga beli dan target harga.
           </p>
-          <a href="profit-calculator.html" class="inline-flex items-center text-primary font-medium">
+          <a href="#tools" class="inline-flex items-center text-primary font-medium">
             Buka Kalkulator
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -449,7 +451,7 @@
           <p class="text-gray-600 dark:text-gray-300 mb-6">
             Pantau biaya transaksi Ethereum dan waktu terbaik untuk melakukan transaksi.
           </p>
-          <a href="gas-fee-tracker.html" class="inline-flex items-center text-secondary font-medium">
+          <a href="#tools" class="inline-flex items-center text-secondary font-medium">
             Lihat Gas Fee
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -467,7 +469,7 @@
           <p class="text-gray-600 dark:text-gray-300 mb-6">
             Lacak performa investasi crypto Anda secara real-time.
           </p>
-          <a href="coba.html" class="inline-flex items-center text-accent font-medium">
+          <a href="#tools" class="inline-flex items-center text-accent font-medium">
             Lacak Portfolio
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -485,7 +487,7 @@
           <p class="text-gray-600 dark:text-gray-300 mb-6">
             Hitung kapitalisasi pasar potensial dan harga target untuk aset kripto.
           </p>
-          <a href="market.html" class="inline-flex items-center text-primary font-medium">
+          <a href="#tools" class="inline-flex items-center text-primary font-medium">
             Buka Kalkulator
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -496,7 +498,63 @@
     </div>
   </section>
 
-  <section class="py-20 px-6 bg-gradient-to-br from-primary/5 to-secondary/5">
+  <section id="news" class="py-20 px-6 bg-gradient-to-br from-light/50 to-white/50 dark:from-card/50 dark:to-dark/50">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">Berita & Analisis Terbaru</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                Dapatkan informasi terkini tentang pasar crypto dari sumber terpercaya
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white dark:bg-card rounded-2xl shadow-xl overflow-hidden transition-all hover:shadow-2xl hover:-translate-y-2">
+                <img src="https://images.unsplash.com/photo-1621570183188-b219b161f38e?q=80&w=1974&auto=format&fit=crop" alt="Berita 1" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <span class="text-sm text-gray-500 mb-2 block">1 Agustus 2025</span>
+                    <h3 class="text-xl font-bold mb-3">Bitcoin Mendekati Titik Resisten Baru Setelah Reli Kuat</h3>
+                    <p class="text-gray-600 dark:text-gray-300 line-clamp-3">
+                        Harga Bitcoin (BTC) menunjukkan momentum bullish yang kuat, mendekati titik resisten krusial di $80,000. Para analis pasar...
+                    </p>
+                    <a href="#" class="inline-block mt-4 text-primary font-medium hover:underline">
+                        Baca Selengkapnya
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-card rounded-2xl shadow-xl overflow-hidden transition-all hover:shadow-2xl hover:-translate-y-2">
+                <img src="https://images.unsplash.com/photo-1624996752380-8ec241e4d6dc?q=80&w=1974&auto=format&fit=crop" alt="Berita 2" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <span class="text-sm text-gray-500 mb-2 block">30 Juli 2025</span>
+                    <h3 class="text-xl font-bold mb-3">Lonjakan NFT Terbaru di Jaringan Solana: Apa yang Terjadi?</h3>
+                    <p class="text-gray-600 dark:text-gray-300 line-clamp-3">
+                        Aktivitas perdagangan NFT di jaringan Solana melonjak drastis, didorong oleh peluncuran koleksi baru yang sangat dinantikan...
+                    </p>
+                    <a href="#" class="inline-block mt-4 text-primary font-medium hover:underline">
+                        Baca Selengkapnya
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-card rounded-2xl shadow-xl overflow-hidden transition-all hover:shadow-2xl hover:-translate-y-2">
+                <img src="https://images.unsplash.com/photo-1628186259062-85d0d82946c5?q=80&w=1974&auto=format&fit=crop" alt="Berita 3" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <span class="text-sm text-gray-500 mb-2 block">28 Juli 2025</span>
+                    <h3 class="text-xl font-bold mb-3">Regulasi Baru Crypto di Indonesia: Dampak untuk Investor Lokal</h3>
+                    <p class="text-gray-600 dark:text-gray-300 line-clamp-3">
+                        Pemerintah Indonesia mengumumkan kerangka regulasi baru untuk aset kripto. Bagaimana hal ini akan memengaruhi investor...
+                    </p>
+                    <a href="#" class="inline-block mt-4 text-primary font-medium hover:underline">
+                        Baca Selengkapnya
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+  </section>
+
+  <section id="community" class="py-20 px-6 bg-gradient-to-br from-primary/5 to-secondary/5">
     <div class="max-w-7xl mx-auto">
       <div class="text-center mb-16">
         <h2 class="text-4xl font-bold mb-4">Bergabung Dengan Komunitas Kami</h2>
@@ -601,31 +659,31 @@
         <div>
           <h3 class="text-lg font-semibold text-white mb-4">Edukasi</h3>
           <ul class="space-y-3">
-            <li><a href="pemula.html" class="text-gray-400 hover:text-primary transition-colors">Pemula</a></li>
-            <li><a href="menengah.html" class="text-gray-400 hover:text-primary transition-colors">Analisis Teknikal</a></li>
-            <li><a href="mahir.html" class="text-gray-400 hover:text-primary transition-colors">Analisis On-Chain</a></li>
-            <li><a href="all_assets.html" class="text-gray-400 hover:text-primary transition-colors">Token</a></li>
+            <li><a href="#learn" class="text-gray-400 hover:text-primary transition-colors">Pemula</a></li>
+            <li><a href="#learn" class="text-gray-400 hover:text-primary transition-colors">Analisis Teknikal</a></li>
+            <li><a href="#learn" class="text-gray-400 hover:text-primary transition-colors">Analisis On-Chain</a></li>
+            <li><a href="#market" class="text-gray-400 hover:text-primary transition-colors">Token</a></li>
           </ul>
         </div>
         
         <div>
           <h3 class="text-lg font-semibold text-white mb-4">Tools</h3>
           <ul class="space-y-3">
-            <li><a href="profit-calculator" class="text-gray-400 hover:text-primary transition-colors">Kalkulator Profit</a></li>
-            <li><a href="coba.html" class="text-gray-400 hover:text-primary transition-colors">Portfolio Tracker</a></li>
-            <li><a href="gas-fee-tracker.html" class="text-gray-400 hover:text-primary transition-colors">Gas Fee Tracker</a></li>
-            <li><a href="market.html" class="text-gray-400 hover:text-primary transition-colors">Market Cap Calculator</a></li>
+            <li><a href="#tools" class="text-gray-400 hover:text-primary transition-colors">Kalkulator Profit</a></li>
+            <li><a href="#tools" class="text-gray-400 hover:text-primary transition-colors">Portfolio Tracker</a></li>
+            <li><a href="#tools" class="text-gray-400 hover:text-primary transition-colors">Gas Fee Tracker</a></li>
+            <li><a href="#tools" class="text-gray-400 hover:text-primary transition-colors">Market Cap Calculator</a></li>
           </ul>
         </div>
         
         <div>
           <h3 class="text-lg font-semibold text-white mb-4">Perusahaan</h3>
           <ul class="space-y-3">
-            <li><a href="about.html" class="text-gray-400 hover:text-primary transition-colors">Tentang Kami</a></li>
-            <li><a href="karir.html" class="text-gray-400 hover:text-primary transition-colors">Karir</a></li>
-            <li><a href="kebijakan.html" class="text-gray-400 hover:text-primary transition-colors">Kebijakan Privasi</a></li>
-            <li><a href="syarat.html" class="text-gray-400 hover:text-primary transition-colors">Syarat & Ketentuan</a></li>
-            <li><a href="kontak.html" class="text-gray-400 hover:text-primary transition-colors">Kontak</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Tentang Kami</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Karir</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kebijakan Privasi</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Syarat & Ketentuan</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kontak</a></li>
           </ul>
         </div>
       </div>
@@ -669,38 +727,29 @@
         const savedTheme = localStorage.getItem('color-theme');
 
         if (savedTheme) {
-            // Jika tema tersimpan (dari klik tombol), gunakan tema tersebut
             applyTheme(savedTheme === 'dark');
         } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            // Jika tidak ada tema tersimpan, tetapi sistem lebih suka gelap, terapkan gelap
             applyTheme(true);
         } else {
-            // Jika tidak, default ke terang
             applyTheme(false);
         }
     }
 
-    // Panggil fungsi untuk mengatur tema saat halaman selesai dimuat
     document.addEventListener('DOMContentLoaded', setInitialTheme);
 
-    // Bagian PENTING: Mendengarkan perubahan preferensi tema sistem secara real-time
-    // Ini akan membuat situs web secara otomatis berubah jika Anda mengganti mode gelap/terang di pengaturan komputer/HP,
-    // HANYA JIKA pengguna belum secara manual memilih tema dengan tombol.
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
         const savedTheme = localStorage.getItem('color-theme');
-        // Hanya terapkan preferensi sistem jika tidak ada tema manual yang disimpan
         if (!savedTheme) {
             applyTheme(event.matches);
         }
     });
 
-    // Peristiwa klik tombol sakelar (untuk tombol yang Anda klik secara manual)
     if (themeToggle) {
         themeToggle.addEventListener('click', function() {
             const isCurrentlyDark = document.documentElement.classList.contains('dark');
             const newThemeIsDark = !isCurrentlyDark;
             applyTheme(newThemeIsDark);
-            localStorage.setItem('color-theme', newThemeIsDark ? 'dark' : 'light'); // Simpan preferensi
+            localStorage.setItem('color-theme', newThemeIsDark ? 'dark' : 'light');
         });
     }
     if (mobileThemeToggle) {
@@ -708,7 +757,7 @@
             const isCurrentlyDark = document.documentElement.classList.contains('dark');
             const newThemeIsDark = !isCurrentlyDark;
             applyTheme(newThemeIsDark);
-            localStorage.setItem('color-theme', newThemeIsDark ? 'dark' : 'light'); // Simpan preferensi
+            localStorage.setItem('color-theme', newThemeIsDark ? 'dark' : 'light');
         });
     }
     // END OF MODIFIED JAVASCRIPT FOR THEME TOGGLE
@@ -719,11 +768,10 @@
 
     if (mobileMenuButton && mobileMenu) {
         mobileMenuButton.addEventListener('click', function() {
-            mobileMenuButton.classList.toggle('open'); // Untuk animasi icon hamburger
-            mobileMenu.classList.toggle('active'); // Untuk menampilkan/menyembunyikan menu
+            mobileMenuButton.classList.toggle('open');
+            mobileMenu.classList.toggle('active');
         });
 
-        // Menutup menu mobile saat link diklik (opsional, tapi disarankan)
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenuButton.classList.remove('open');
@@ -731,7 +779,6 @@
             });
         });
     }
-
 
     // Fetch Crypto Data
     async function fetchCryptoData() {
@@ -789,7 +836,6 @@
           tableBody.appendChild(row);
         });
 
-        // Render sparkline charts
         document.querySelectorAll('[data-sparkline]').forEach(canvas => {
           const ctx = canvas.getContext('2d');
           const data = JSON.parse(canvas.dataset.sparkline);
@@ -833,10 +879,9 @@
       }
     }
 
-    // Load crypto data on page load
     document.addEventListener('DOMContentLoaded', () => {
       fetchCryptoData();
-      setInterval(fetchCryptoData, 60000); // Update setiap menit
+      setInterval(fetchCryptoData, 60000);
     });
 
   </script>
