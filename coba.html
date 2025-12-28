@@ -1,737 +1,254 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CryptoSphere | Portfolio Tracker</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        fontFamily: {
-          sans: ['Space Grotesk', 'sans-serif'],
-        },
-        extend: {
-          colors: {
-            primary: "#00f5d4",
-            secondary: "#7b2cbf",
-            dark: "#0f0e17",
-            light: "#fffffe",
-            card: "#1e1e2e",
-            accent: "#ff8906"
-          },
-          animation: {
-            'gradient-x': 'gradient-x 8s ease infinite',
-            'float': 'float 6s ease-in-out infinite',
-          },
-          keyframes: {
-            'gradient-x': {
-              '0%, 100%': { 'background-position': '0% 50%' },
-              '50%': { 'background-position': '100% 50%' },
-            },
-            'float': {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-20px)' },
-            }
-          }
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptoSphere | Portfolio Tracker</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    fontFamily: { sans: ['Space Grotesk', 'sans-serif'] },
+    extend: {
+      colors: {
+        primary:"#00f5d4", secondary:"#7b2cbf",
+        dark:"#0f0e17", light:"#fffffe", card:"#1e1e2e"
       }
     }
-  </script>
-  <style>
-    /* **** REVISI PENTING UNTUK SCROLLING DAN TEMA **** */
-    html, body {
-        height: 100%; /* Memastikan elemen mengambil tinggi penuh viewport */
-        overflow-y: auto !important; /* MENGGUNAKAN !important untuk memaksa scrolling vertikal */
-        -webkit-overflow-scrolling: touch; /* Untuk scrolling yang lebih mulus di perangkat iOS */
-    }
-
-    body {
-      background-color: var(--light-bg);
-      color: var(--dark-text);
-      font-family: var(--font-sans);
-      scroll-behavior: smooth;
-    }
-
-    .gradient-text {
-      background: linear-gradient(90deg, #00f5d4, #7b2cbf, #ff8906);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: gradient-x 8s ease infinite;
-    }
-
-    /* CSS Tambahan untuk Hamburger */
-    .mobile-menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background-color: var(--dark-bg, rgba(15, 14, 23, 0.9));
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      padding: 1rem 0;
-      z-index: 40;
-      flex-direction: column;
-      align-items: center;
-      transition: all 0.3s ease-in-out;
-      transform: translateY(-10px);
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .mobile-menu.active {
-      display: flex;
-      transform: translateY(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .mobile-menu a {
-      display: block;
-      padding: 0.75rem 1.5rem;
-      color: var(--light-text, #fffffe);
-      font-weight: 500;
-      width: 100%;
-      text-align: center;
-    }
-
-    .mobile-menu a:hover {
-      color: var(--primary-color, #00f5d4);
-      background-color: rgba(255,255,255,0.1);
-    }
-
-    /* Animasi Hamburger Icon */
-    .mobile-menu-icon .bar {
-      display: block;
-      width: 24px;
-      height: 3px;
-      margin: 5px auto;
-      background-color: currentColor;
-      transition: all 0.3s ease-in-out;
-    }
-
-    .mobile-menu-icon.open .bar:nth-child(1) {
-      transform: translateY(8px) rotate(45deg);
-    }
-    .mobile-menu-icon.open .bar:nth-child(2) {
-      opacity: 0;
-    }
-    .mobile-menu-icon.open .bar:nth-child(3) {
-      transform: translateY(-8px) rotate(-45deg);
-    }
-
-    /* Tailwind CSS variables for dynamic colors */
-    html.dark {
-        --dark-bg: #0f0e17;
-        --light-text: #fffffe;
-        --primary-color: #00f5d4;
-        --card-bg: #1e1e2e; /* Menambahkan variabel untuk warna card */
-    }
-    html:not(.dark) {
-        --dark-bg: #ffffff;
-        --light-text: #0f0e17;
-        --primary-color: #00f5d4;
-        --card-bg: #ffffff; /* Menambahkan variabel untuk warna card */
-    }
-  </style>
+  }
+}
+</script>
 </head>
-<body class="bg-light text-dark dark:bg-dark dark:text-light font-sans scroll-smooth transition-colors duration-300">
-  <div class="fixed inset-0 overflow-hidden -z-10">
-    <div class="absolute top-1/4 left-1/4 w-4 h-4 rounded-full bg-primary opacity-20 animate-float"></div>
-    <div class="absolute top-1/3 right-1/4 w-6 h-6 rounded-full bg-secondary opacity-15 animate-float" style="animation-delay: 1s;"></div>
-    <div class="absolute bottom-1/4 left-1/3 w-8 h-8 rounded-full bg-accent opacity-10 animate-float" style="animation-delay: 2s;"></div>
-    <div class="absolute bottom-1/3 right-1/3 w-5 h-5 rounded-full bg-primary opacity-15 animate-float" style="animation-delay: 3s;"></div>
-  </div>
 
-  <header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-dark/80 backdrop-blur-md shadow-sm">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center relative">
-      <div class="flex items-center space-x-2">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-primary">
-          <path fill-rule="evenodd" d="M12 21.75c5.385 0 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25 2.25 6.615 2.25 12s4.365 9.75 9.75 9.75zM10.5 7.963a1.5 1.5 0 00-1.5 1.5v5.074a1.5 1.5 0 001.5 1.5h5.074a1.5 1.5 0 001.5-1.5v-5.074a1.5 1.5 0 00-1.5-1.5H10.5z" clip-rule="evenodd" />
-        </svg>
-        <h1 class="text-2xl font-bold gradient-text">CryptoSphere</h1>
-      </div>
-      
-      <nav id="desktop-nav" class="hidden md:flex items-center space-x-8">
-        <a href="index.html#home" class="font-medium hover:text-primary transition-colors">Beranda</a>
-        <a href="index.html#learn" class="font-medium hover:text-primary transition-colors">Belajar</a>
-        <a href="index.html#market" class="font-medium hover:text-primary transition-colors">Market</a>
-        <a href="index.html#tools" class="font-medium text-primary transition-colors">Tools</a>
-        <a href="index.html#community" class="font-medium hover:text-primary transition-colors">Komunitas</a>
-        
-        <button id="theme-toggle" class="p-2 rounded-full bg-white dark:bg-card shadow-md" aria-label="Toggle dark mode">
-          <svg id="moon-icon" class="w-5 h-5 text-dark dark:text-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-          </svg>
-          <svg id="sun-icon" class="w-5 h-5 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-          </svg>
-        </button>
-      </nav>
-      
-      <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-dark dark:text-light mobile-menu-icon" aria-label="Open mobile menu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
+<body class="bg-light dark:bg-dark text-dark dark:text-light font-sans">
 
-      <nav id="mobile-menu" class="mobile-menu">
-        <a href="index.html#home" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Beranda</a>
-        <a href="index.html#learn" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Belajar</a>
-        <a href="index.html#market" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Market</a>
-        <a href="index.html#tools" class="font-medium text-primary transition-colors">Tools</a>
-        <a href="index.html#community" class="font-medium hover:text-primary transition-colors py-3 px-6 w-full text-center">Komunitas</a>
-        <button id="mobile-theme-toggle" class="p-2 mt-4 rounded-full bg-white dark:bg-card shadow-md md:hidden" aria-label="Toggle dark mode">
-          <svg id="mobile-moon-icon" class="w-5 h-5 text-dark dark:text-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-          </svg>
-          <svg id="mobile-sun-icon" class="w-5 h-5 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-          </svg>
-        </button>
-      </nav>
-    </div>
-  </header>
+<section class="min-h-screen px-4 py-24">
+<div class="max-w-4xl mx-auto bg-white dark:bg-card rounded-2xl shadow-xl p-6">
 
-  <section id="portfolio-tracker" class="px-4 py-8 pt-24 pb-32 md:px-6">
-    <div class="max-w-4xl mx-auto w-full bg-white dark:bg-card rounded-2xl shadow-xl p-6 md:p-10">
-      <div class="text-center mb-8 md:mb-10">
-        <div class="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2-3-.895-3-2 1.343-2 3-2z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2-1.343-2-3-2z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z"/>
-          </svg>
-        </div>
-        <h2 class="text-3xl md:text-4xl font-bold mb-2 gradient-text">Portfolio Tracker Kripto</h2>
-        <p class="text-md md:text-lg text-gray-600 dark:text-gray-300">
-          Lacak nilai portofolio cryptocurrency Anda secara real-time.
-        </p>
-      </div>
+<h1 class="text-3xl font-bold text-center text-primary mb-6">
+Portfolio Tracker Kripto
+</h1>
 
-      <div class="space-y-5 mb-8">
-        <div>
-          <label for="currencySelect" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Pilih Mata Uang Dasar</label>
-          <select id="currencySelect" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primary dark:bg-dark dark:border-gray-700 dark:text-light">
-            <option value="USD">USD ($)</option>
-            <option value="IDR">IDR (Rp)</option>
-          </select>
-        </div>
+<!-- INPUT -->
+<div class="space-y-4">
+<select id="currencySelect" class="w-full p-3 rounded-lg dark:bg-dark">
+<option value="USD">USD ($)</option>
+<option value="IDR">IDR (Rp)</option>
+</select>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label for="coinName" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nama Koin (mis. bitcoin, ethereum)</label>
-            <input type="text" id="coinName" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primary dark:bg-dark dark:border-gray-700 dark:text-light" placeholder="bitcoin, ethereum, solana">
-          </div>
-          <div>
-            <label for="amount" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Jumlah Koin</label>
-            <input type="number" id="amount" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primary dark:bg-dark dark:border-gray-700 dark:text-light" placeholder="0.5, 2.3, 100">
-          </div>
-          <div class="md:col-span-2">
-            <label for="buyPrice" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Harga Beli per Koin (opsional, untuk hitung P/L)</label>
-            <input type="number" id="buyPrice" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primary dark:bg-dark dark:border-gray-700 dark:text-light" placeholder="25000 (harga beli per koin)">
-          </div>
-        </div>
+<input id="coinName" placeholder="bitcoin / btc / eth / sol" class="w-full p-3 rounded-lg dark:bg-dark">
+<input id="amount" type="number" placeholder="Jumlah koin" class="w-full p-3 rounded-lg dark:bg-dark">
+<input id="buyPrice" type="number" placeholder="Harga beli (opsional)" class="w-full p-3 rounded-lg dark:bg-dark">
 
-        <button id="addCoinBtn" class="w-full py-3 mt-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-lg hover:shadow-lg transition-all transform hover:-translate-y-1">
-          Tambah Koin ke Portofolio
-        </button>
-      </div>
+<button id="addCoinBtn"
+class="w-full bg-primary text-black font-bold py-3 rounded-lg">
+Tambah Koin
+</button>
+</div>
 
-      <hr class="border-gray-300 dark:border-gray-700 my-8">
+<!-- ERROR -->
+<div id="apiError" class="hidden mt-4 p-3 bg-red-200 dark:bg-red-900 rounded">
+<p class="font-bold">Error:</p>
+<p id="apiErrorMessage"></p>
+</div>
 
-      <div id="portfolioSummary" class="mt-8 mb-8 hidden">
-        <h3 class="text-2xl font-bold text-primary mb-6 text-center">Ringkasan Portofolio</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-gradient-to-br from-primary/10 to-secondary/10 dark:from-primary/5 dark:to-secondary/5 p-5 rounded-lg shadow-md border border-primary/20">
-            <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">Total Nilai Portofolio</p>
-            <p id="totalCurrentValue" class="text-2xl font-bold text-primary"></p>
-          </div>
-          <div class="bg-gray-100 dark:bg-dark p-5 rounded-lg shadow-md border border-gray-300 dark:border-gray-700">
-            <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">Total Investasi</p>
-            <p id="totalInvested" class="text-2xl font-bold text-gray-800 dark:text-light"></p>
-          </div>
-          <div class="bg-gray-100 dark:bg-dark p-5 rounded-lg shadow-md border border-gray-300 dark:border-gray-700">
-            <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">Total P/L</p>
-            <p id="totalProfitLoss" class="text-2xl font-bold"></p>
-          </div>
-          <div class="bg-gray-100 dark:bg-dark p-5 rounded-lg shadow-md border border-gray-300 dark:border-gray-700">
-            <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">P/L (%)</p>
-            <p id="totalProfitLossPercentage" class="text-2xl font-bold"></p>
-          </div>
-        </div>
-      </div>
+<!-- SUMMARY -->
+<div id="portfolioSummary" class="hidden grid grid-cols-2 gap-4 mt-8">
+<div>
+<p>Total Value</p>
+<p id="totalCurrentValue" class="font-bold"></p>
+</div>
+<div>
+<p>Total Invest</p>
+<p id="totalInvested" class="font-bold"></p>
+</div>
+<div>
+<p>Total P/L</p>
+<p id="totalProfitLoss" class="font-bold"></p>
+</div>
+<div>
+<p>P/L %</p>
+<p id="totalProfitLossPercentage" class="font-bold"></p>
+</div>
+</div>
 
-      <h3 class="text-2xl font-bold text-primary mb-6 text-center">Aset Portofolio Anda</h3>
-      
-      <div id="portfolioList" class="space-y-4">
-        <p id="noCoinsMessage" class="text-center text-gray-500 dark:text-gray-400 py-4">Belum ada koin di portofolio Anda. Tambahkan satu!</p>
-      </div>
+<!-- LIST -->
+<div id="portfolioList" class="mt-8 space-y-3"></div>
 
-      <div id="apiError" class="mt-6 p-4 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg hidden">
-        <p class="font-bold">Error:</p>
-        <p>Gagal memuat harga koin. Mohon coba lagi nanti atau periksa nama koin dan koneksi internet Anda.</p>
-        <p class="text-xs mt-2">Pastikan nama koin yang Anda masukkan sesuai dengan CoinGecko (mis. "bitcoin" bukan "BTC").</p>
-      </div>
+<button id="clearPortfolioBtn"
+class="mt-8 w-full bg-red-600 text-white py-3 rounded-lg">
+Hapus Semua
+</button>
 
-      <button id="clearPortfolioBtn" class="w-full py-3 mt-8 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors">
-        Bersihkan Portofolio
-      </button>
-    </div>
-  </section>
+</div>
+</section>
 
-  <footer class="bg-dark dark:bg-card py-16 px-6">
-    <div class="max-w-7xl mx-auto">
-      <div class="grid md:grid-cols-4 gap-12">
-        <div>
-          <div class="flex items-center space-x-2 mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-primary">
-              <path fill-rule="evenodd" d="M12 21.75c5.385 0 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25 2.25 6.615 2.25 12s4.365 9.75 9.75 9.75zM10.5 7.963a1.5 1.5 0 00-1.5 1.5v5.074a1.5 1.5 0 001.5 1.5h5.074a1.5 1.5 0 001.5-1.5v-5.074a1.5 1.5 0 00-1.5-1.5H10.5z" clip-rule="evenodd" />
-            </svg>
-            <h2 class="text-2xl font-bold text-white">CryptoSphere</h2>
-          </div>
-          <p class="text-gray-400 mb-6">
-            Platform edukasi cryptocurrency terkemuka di Indonesia.
-          </p>
-          <div class="flex space-x-4">
-            <a href="#" class="text-gray-400 hover:text-white" aria-label="Twitter">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-              </svg>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white" aria-label="Instagram">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-              </svg>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white" aria-label="LinkedIn">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-        
-        <div>
-          <h3 class="text-lg font-semibold text-white mb-4">Edukasi</h3>
-          <ul class="space-y-3">
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Pemula</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Analisis Teknikal</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Analisis Fundamental</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">DeFi</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">NFT</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h3 class="text-lg font-semibold text-white mb-4">Tools</h3>
-          <ul class="space-y-3">
-            <li><a href="profit-calculator.html" class="text-gray-400 hover:text-primary transition-colors">Kalkulator Profit</a></li>
-            <li><a href="portfolio-tracker.html" class="text-primary hover:text-primary transition-colors">Portfolio Tracker</a></li>
-            <li><a href="gas-fee-tracker.html" class="text-gray-400 hover:text-primary transition-colors">Gas Fee Tracker</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Market Cap Calculator</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h3 class="text-lg font-semibold text-white mb-4">Perusahaan</h3>
-          <ul class="space-y-3">
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Tentang Kami</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Karir</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kebijakan Privasi</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Syarat & Ketentuan</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Kontak</a></li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="border-t border-gray-800 mt-12 pt-8 text-center">
-        <p class="text-gray-500">© 2025 CryptoSphere. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+<script>
+/* ================= CONFIG ================= */
+const coinAlias = {
+ btc:'bitcoin', eth:'ethereum', sol:'solana',
+ bnb:'binancecoin', ada:'cardano',
+ xrp:'ripple', doge:'dogecoin'
+};
 
-  <script>
-    // Dark Mode Toggle (Desktop)
-    const themeToggle = document.getElementById('theme-toggle');
-    const moonIcon = document.getElementById('moon-icon');
-    const sunIcon = document.getElementById('sun-icon');
+const REFRESH_INTERVAL = 60000;
 
-    // Dark Mode Toggle (Mobile)
-    const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
-    const mobileMoonIcon = document.getElementById('mobile-moon-icon');
-    const mobileSunIcon = document.getElementById('mobile-sun-icon');
+/* ================= STATE ================= */
+let portfolio = JSON.parse(localStorage.getItem('cryptoPortfolio') || '[]');
+let refreshInterval;
 
-    function applyTheme(isDark) {
-        if (isDark) {
-            document.documentElement.classList.add('dark');
-            if (moonIcon) moonIcon.classList.add('hidden');
-            if (sunIcon) sunIcon.classList.remove('hidden');
-            if (mobileMoonIcon) mobileMoonIcon.classList.add('hidden');
-            if (mobileSunIcon) mobileSunIcon.classList.remove('hidden');
-        } else {
-            document.documentElement.classList.remove('dark');
-            if (moonIcon) moonIcon.classList.remove('hidden');
-            if (sunIcon) sunIcon.classList.add('hidden');
-            if (mobileMoonIcon) mobileMoonIcon.classList.remove('hidden');
-            if (mobileSunIcon) mobileSunIcon.classList.add('hidden');
-        }
-    }
+/* ================= DOM ================= */
+const currencySelect = document.getElementById('currencySelect');
+const coinNameInput = document.getElementById('coinName');
+const amountInput = document.getElementById('amount');
+const buyPriceInput = document.getElementById('buyPrice');
+const addCoinBtn = document.getElementById('addCoinBtn');
+const portfolioList = document.getElementById('portfolioList');
+const portfolioSummary = document.getElementById('portfolioSummary');
+const apiError = document.getElementById('apiError');
+const apiErrorMessage = document.getElementById('apiErrorMessage');
 
-    function setInitialTheme() {
-        const savedTheme = localStorage.getItem('color-theme');
-        if (savedTheme) {
-            applyTheme(savedTheme === 'dark');
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            applyTheme(true);
-        } else {
-            applyTheme(false);
-        }
-    }
+/* ================= HELPERS ================= */
+const savePortfolio = () =>
+ localStorage.setItem('cryptoPortfolio', JSON.stringify(portfolio));
 
-    document.addEventListener('DOMContentLoaded', setInitialTheme);
+const formatCurrency = (n) =>
+ new Intl.NumberFormat(
+   currencySelect.value === 'USD' ? 'en-US' : 'id-ID',
+   { style:'currency', currency:currencySelect.value }
+ ).format(n);
 
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-        const savedTheme = localStorage.getItem('color-theme');
-        if (!savedTheme) {
-            applyTheme(event.matches);
-        }
-    });
+/* ================= ADD COIN ================= */
+addCoinBtn.onclick = () => {
+ let name = coinNameInput.value.trim().toLowerCase();
+ if (coinAlias[name]) name = coinAlias[name];
 
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            const isCurrentlyDark = document.documentElement.classList.contains('dark');
-            const newThemeIsDark = !isCurrentlyDark;
-            applyTheme(newThemeIsDark);
-            localStorage.setItem('color-theme', newThemeIsDark ? 'dark' : 'light');
-        });
-    }
-    if (mobileThemeToggle) {
-        mobileThemeToggle.addEventListener('click', function() {
-            const isCurrentlyDark = document.documentElement.classList.contains('dark');
-            const newThemeIsDark = !isCurrentlyDark;
-            applyTheme(newThemeIsDark);
-            localStorage.setItem('color-theme', newThemeIsDark ? 'dark' : 'light');
-        });
-    }
+ const amount = parseFloat(amountInput.value);
+ const buyPrice = parseFloat(buyPriceInput.value) || 0;
 
-    // Hamburger Menu Toggle
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
+ if (!name || amount <= 0) return alert('Input tidak valid');
 
-    if (mobileMenuButton && mobileMenu) {
-        mobileMenuButton.addEventListener('click', function() {
-            mobileMenuButton.classList.toggle('open');
-            mobileMenu.classList.toggle('active');
-        });
+ const exist = portfolio.find(c => c.name === name);
+ if (exist) {
+   exist.amount += amount;
+   if (buyPrice) exist.buyPrice = buyPrice;
+ } else {
+   portfolio.push({
+     id:Date.now(), name, amount, buyPrice,
+     currentPrice:0, currentValue:0, profitLoss:0
+   });
+ }
 
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenuButton.classList.remove('open');
-                mobileMenu.classList.remove('active');
-            });
-        });
-    }
+ savePortfolio();
+ render();
+ fetchPrices();
+ coinNameInput.value = amountInput.value = buyPriceInput.value = '';
+};
 
-    // Portfolio Tracker Logic
-    const currencySelect = document.getElementById('currencySelect');
-    const coinNameInput = document.getElementById('coinName');
-    const amountInput = document.getElementById('amount');
-    const buyPriceInput = document.getElementById('buyPrice');
-    const addCoinBtn = document.getElementById('addCoinBtn');
-    const portfolioList = document.getElementById('portfolioList');
-    const noCoinsMessage = document.getElementById('noCoinsMessage');
-    const portfolioSummary = document.getElementById('portfolioSummary');
-    const totalCurrentValueSpan = document.getElementById('totalCurrentValue');
-    const totalInvestedSpan = document.getElementById('totalInvested');
-    const totalProfitLossSpan = document.getElementById('totalProfitLoss');
-    const totalProfitLossPercentageSpan = document.getElementById('totalProfitLossPercentage');
-    const apiErrorDiv = document.getElementById('apiError');
-    const clearPortfolioBtn = document.getElementById('clearPortfolioBtn');
+/* ================= RENDER ================= */
+function render() {
+ portfolioList.innerHTML = '';
+ if (!portfolio.length) return portfolioSummary.classList.add('hidden');
 
-    let portfolio = []; // Array to store coin objects
-    const REFRESH_INTERVAL_MS = 60000; // Refresh every 60 seconds (1 menit)
+ portfolioSummary.classList.remove('hidden');
 
-    // Load portfolio from localStorage on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        const savedPortfolio = localStorage.getItem('cryptoPortfolio');
-        if (savedPortfolio) {
-            portfolio = JSON.parse(savedPortfolio);
-            renderPortfolio();
-            fetchPricesAndUpdatePortfolio();
-        } else {
-            noCoinsMessage.classList.remove('hidden');
-            portfolioSummary.classList.add('hidden');
-        }
-    });
+ portfolio.forEach(c => {
+  const el = document.createElement('div');
+  el.className = 'p-3 rounded bg-gray-100 dark:bg-dark';
+  el.innerHTML = `
+   <b>${c.name}</b><br>
+   Amount: ${c.amount}<br>
+   Value: ${formatCurrency(c.currentValue)}<br>
+   P/L: ${formatCurrency(c.profitLoss)}
+  `;
+  portfolioList.appendChild(el);
+ });
 
-    // Save portfolio to localStorage
-    function savePortfolio() {
-        localStorage.setItem('cryptoPortfolio', JSON.stringify(portfolio));
-    }
+ updateSummary();
+}
 
-    // Format currency based on selected option
-    const formatCurrency = (amount, currencyCode = currencySelect.value) => {
-        let locale = currencyCode === 'USD' ? 'en-US' : 'id-ID';
-        let options = { style: 'currency', currency: currencyCode };
-        if (currencyCode === 'IDR') {
-            options.minimumFractionDigits = 0;
-            options.maximumFractionDigits = 0;
-        } else {
-            options.minimumFractionDigits = 2;
-            options.maximumFractionDigits = 4;
-        }
-        return new Intl.NumberFormat(locale, options).format(amount);
-    };
+/* ================= FETCH PRICE ================= */
+async function fetchPrices() {
+ apiError.classList.add('hidden');
+ if (!portfolio.length) return;
 
-    // Add coin to portfolio
-    addCoinBtn.addEventListener('click', () => {
-        const coinName = coinNameInput.value.trim().toLowerCase();
-        const amount = parseFloat(amountInput.value);
-        const buyPrice = parseFloat(buyPriceInput.value) || 0; // Optional
+ try {
+  const ids = portfolio.map(c=>c.name).join(',');
+  const res = await fetch(
+   `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd,idr`
+  );
+  if (!res.ok) throw new Error('API Error / Rate limit');
 
-        if (!coinName || isNaN(amount) || amount <= 0) {
-            alert('Mohon masukkan Nama Koin dan Jumlah Koin yang valid.');
-            return;
-        }
+  const data = await res.json();
 
-        const newCoin = {
-            id: Date.now(), // Unique ID
-            name: coinName,
-            amount: amount,
-            buyPrice: buyPrice,
-            currentPrice: 0, // Will be fetched
-            currentValue: 0, // Will be calculated
-            profitLoss: 0, // Will be calculated
-            profitLossPercentage: 0 // Will be calculated
-        };
+  portfolio.forEach(c => {
+   const p = data[c.name];
+   if (!p) return;
 
-        portfolio.push(newCoin);
-        savePortfolio();
-        renderPortfolio();
-        fetchPricesAndUpdatePortfolio(); // Fetch price for the new coin
-        
-        // Clear inputs
-        coinNameInput.value = '';
-        amountInput.value = '';
-        buyPriceInput.value = '';
-    });
+   c.currentPrice = currencySelect.value === 'USD' ? p.usd : p.idr;
+   c.currentValue = c.currentPrice * c.amount;
+   c.profitLoss = c.buyPrice
+    ? (c.currentPrice - c.buyPrice) * c.amount
+    : 0;
+  });
 
-    // Render portfolio items in the UI
-    function renderPortfolio() {
-        portfolioList.innerHTML = ''; // Clear existing list
-        if (portfolio.length === 0) {
-            noCoinsMessage.classList.remove('hidden');
-            portfolioSummary.classList.add('hidden');
-            return;
-        } else {
-            noCoinsMessage.classList.add('hidden');
-            portfolioSummary.classList.remove('hidden');
-        }
+  savePortfolio();
+  render();
 
-        portfolio.forEach(coin => {
-            const coinDiv = document.createElement('div');
-            coinDiv.className = 'bg-gray-100 dark:bg-dark p-4 rounded-lg shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0';
-            coinDiv.innerHTML = `
-                <div class="flex-1 min-w-0">
-                    <h4 class="text-lg md:text-xl font-bold text-secondary capitalize truncate">${coin.name}</h4>
-                    <p class="text-sm text-gray-600 dark:text-gray-300">Jumlah: <span class="font-medium">${coin.amount.toLocaleString()}</span></p>
-                </div>
-                <div class="flex flex-col items-start md:items-end text-left md:text-right w-full md:w-auto mt-2 md:mt-0 md:ml-4">
-                    ${coin.buyPrice > 0 ? `<p class="text-sm text-gray-600 dark:text-gray-300">Harga Beli: <span class="font-medium">${formatCurrency(coin.buyPrice)}</span></p>` : ''}
-                    <p class="text-sm text-gray-600 dark:text-gray-300">Harga Saat Ini:</p>
-                    <p class="text-lg font-bold text-primary" id="price-${coin.id}">--</p>
-                </div>
-                <div class="flex flex-col items-start md:items-end text-left md:text-right w-full md:w-auto mt-2 md:mt-0 md:ml-4">
-                    <p class="text-sm text-gray-600 dark:text-gray-300">Nilai Saat Ini:</p>
-                    <p class="text-xl font-bold" id="value-${coin.id}">--</p>
-                </div>
-                <div class="flex flex-col items-start md:items-end text-left md:text-right w-full md:w-auto mt-2 md:mt-0 md:ml-4">
-                    <p class="text-sm text-gray-600 dark:text-gray-300">P/L (Nilai):</p>
-                    <p class="text-lg font-bold" id="pl-${coin.id}">--</p>
-                    <p class="text-sm" id="pl-pct-${coin.id}">--</p>
-                </div>
-                <button class="ml-auto md:ml-4 text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900 transition-colors" data-id="${coin.id}" data-action="delete" title="Hapus Koin">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                </button>
-            `;
-            portfolioList.appendChild(coinDiv);
-        });
+ } catch(e) {
+  apiError.classList.remove('hidden');
+  apiErrorMessage.textContent = e.message;
+ }
+}
 
-        // Add event listeners for delete buttons
-        portfolioList.querySelectorAll('button[data-action="delete"]').forEach(button => {
-            button.addEventListener('click', (event) => {
-                const idToDelete = parseInt(event.currentTarget.dataset.id);
-                portfolio = portfolio.filter(coin => coin.id !== idToDelete);
-                savePortfolio();
-                renderPortfolio();
-                updateSummary(); // Update summary after deletion
-            });
-        });
-    }
+/* ================= SUMMARY ================= */
+function updateSummary() {
+ let v=0,i=0,p=0;
+ portfolio.forEach(c=>{
+  v+=c.currentValue;
+  i+=c.amount*c.buyPrice;
+  p+=c.profitLoss;
+ });
 
-    // Fetch prices for all coins in portfolio and update display
-    async function fetchPricesAndUpdatePortfolio() {
-        apiErrorDiv.classList.add('hidden'); // Hide previous error
-        if (portfolio.length === 0) {
-            updateSummary();
-            return;
-        }
+ document.getElementById('totalCurrentValue').textContent = formatCurrency(v);
+ document.getElementById('totalInvested').textContent = formatCurrency(i);
+ document.getElementById('totalProfitLoss').textContent = formatCurrency(p);
+ document.getElementById('totalProfitLossPercentage').textContent =
+  i ? ((p/i)*100).toFixed(2)+'%' : '0%';
+}
 
-        const coinIds = portfolio.map(coin => coin.name).join(',');
-        const vsCurrencies = 'usd,idr';
+/* ================= EVENTS ================= */
+let currencyTimeout;
+currencySelect.onchange = ()=>{
+ clearTimeout(currencyTimeout);
+ currencyTimeout = setTimeout(fetchPrices,400);
+};
 
-        try {
-            const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinIds}&vs_currencies=${vsCurrencies}`);
-            if (!response.ok) {
-                if (response.status === 429) { // Too Many Requests
-                    throw new Error('Terlalu banyak permintaan ke API. Mohon tunggu sebentar sebelum mencoba lagi.');
-                }
-                throw new Error('Gagal mengambil data harga dari CoinGecko.');
-            }
-            const data = await response.json();
+document.getElementById('clearPortfolioBtn').onclick = ()=>{
+ if(confirm('Hapus semua?')){
+  portfolio=[];
+  savePortfolio();
+  render();
+ }
+};
 
-            portfolio.forEach(coin => {
-                const priceData = data[coin.name];
-                if (priceData) {
-                    const currentPrice = currencySelect.value === 'USD' ? priceData.usd : priceData.idr;
-                    coin.currentPrice = currentPrice || 0;
-                    coin.currentValue = coin.amount * coin.currentPrice;
-                    
-                    if (coin.buyPrice > 0) {
-                        coin.profitLoss = (coin.currentPrice - coin.buyPrice) * coin.amount;
-                        coin.profitLossPercentage = (coin.currentPrice - coin.buyPrice) / coin.buyPrice * 100;
-                    } else {
-                        coin.profitLoss = 0;
-                        coin.profitLossPercentage = 0;
-                    }
+/* ================= INTERVAL SAFE ================= */
+function startInterval(){
+ refreshInterval = setInterval(fetchPrices, REFRESH_INTERVAL);
+}
+document.addEventListener('visibilitychange',()=>{
+ document.hidden ? clearInterval(refreshInterval) : startInterval();
+});
 
-                    document.getElementById(`price-${coin.id}`).textContent = formatCurrency(coin.currentPrice);
-                    document.getElementById(`value-${coin.id}`).textContent = formatCurrency(coin.currentValue);
-                    
-                    const plElement = document.getElementById(`pl-${coin.id}`);
-                    const plPctElement = document.getElementById(`pl-pct-${coin.id}`);
-
-                    if (coin.buyPrice > 0) {
-                        // Reset classes
-                        plElement.classList.remove('text-red-500', 'text-green-500', 'text-gray-600', 'dark:text-gray-300');
-                        plPctElement.classList.remove('text-red-500', 'text-green-500', 'text-gray-600', 'dark:text-gray-300');
-
-                        // Apply new classes based on profit/loss
-                        if (coin.profitLoss > 0) {
-                            plElement.classList.add('text-green-500');
-                            plPctElement.classList.add('text-green-500');
-                        } else if (coin.profitLoss < 0) {
-                            plElement.classList.add('text-red-500');
-                            plPctElement.classList.add('text-red-500');
-                        } else {
-                            plElement.classList.add('text-gray-600', 'dark:text-gray-300'); // Neutral
-                            plPctElement.classList.add('text-gray-600', 'dark:text-gray-300'); // Neutral
-                        }
-                        plElement.textContent = formatCurrency(coin.profitLoss);
-                        plPctElement.textContent = `${coin.profitLossPercentage.toFixed(2)}%`;
-                    } else {
-                        plElement.textContent = '--';
-                        plPctElement.textContent = '--';
-                        plElement.classList.remove('text-green-500', 'text-red-500');
-                        plElement.classList.add('text-gray-600', 'dark:text-gray-300');
-                        plPctElement.classList.remove('text-green-500', 'text-red-500');
-                        plPctElement.classList.add('text-gray-600', 'dark:text-gray-300');
-                    }
-                } else {
-                    // Coin price not found or invalid coin ID
-                    document.getElementById(`price-${coin.id}`).textContent = 'N/A';
-                    document.getElementById(`value-${coin.id}`).textContent = 'N/A';
-                    document.getElementById(`pl-${coin.id}`).textContent = 'N/A';
-                    document.getElementById(`pl-pct-${coin.id}`).textContent = 'N/A';
-                    console.warn(`Harga untuk koin ${coin.name} tidak ditemukan atau ID tidak valid.`);
-                }
-            });
-            updateSummary();
-            savePortfolio(); // Save after updating prices
-        } catch (error) {
-            console.error('Error fetching prices:', error);
-            apiErrorDiv.classList.remove('hidden');
-            apiErrorDiv.querySelector('p:last-child').textContent = error.message; // Display specific error message
-            // Reset display if error
-            portfolio.forEach(coin => {
-                document.getElementById(`price-${coin.id}`).textContent = '--';
-                document.getElementById(`value-${coin.id}`).textContent = '--';
-                document.getElementById(`pl-${coin.id}`).textContent = '--';
-                document.getElementById(`pl-pct-${coin.id}`).textContent = '--';
-            });
-            updateSummary(); // Update summary even with errors
-        }
-    }
-
-    // Update portfolio summary
-    function updateSummary() {
-        let totalCurrentValue = 0;
-        let totalInvested = 0;
-        let totalProfitLoss = 0;
-
-        portfolio.forEach(coin => {
-            totalCurrentValue += coin.currentValue;
-            totalInvested += coin.amount * coin.buyPrice;
-            totalProfitLoss += coin.profitLoss;
-        });
-
-        const totalProfitLossPercentage = totalInvested > 0 ? (totalProfitLoss / totalInvested) * 100 : 0;
-
-        totalCurrentValueSpan.textContent = formatCurrency(totalCurrentValue);
-        totalInvestedSpan.textContent = formatCurrency(totalInvested);
-        totalProfitLossSpan.textContent = formatCurrency(totalProfitLoss);
-        totalProfitLossPercentageSpan.textContent = `${totalProfitLossPercentage.toFixed(2)}%`;
-
-        // Apply colors to total profit/loss
-        totalProfitLossSpan.classList.remove('text-red-500', 'text-green-500', 'text-gray-800', 'dark:text-light');
-        totalProfitLossPercentageSpan.classList.remove('text-red-500', 'text-green-500', 'text-gray-800', 'dark:text-light');
-
-        if (totalProfitLoss > 0) {
-            totalProfitLossSpan.classList.add('text-green-500');
-            totalProfitLossPercentageSpan.classList.add('text-green-500');
-        } else if (totalProfitLoss < 0) {
-            totalProfitLossSpan.classList.add('text-red-500');
-            totalProfitLossPercentageSpan.classList.add('text-red-500');
-        } else {
-            totalProfitLossSpan.classList.add('text-gray-800', 'dark:text-light'); // Neutral
-            totalProfitLossPercentageSpan.classList.add('text-gray-800', 'dark:text-light'); // Neutral
-        }
-
-        if (portfolio.length === 0) {
-            portfolioSummary.classList.add('hidden');
-        } else {
-            portfolioSummary.classList.remove('hidden');
-        }
-    }
-
-    // Event listener for currency change
-    currencySelect.addEventListener('change', () => {
-        fetchPricesAndUpdatePortfolio(); // Re-fetch and update all prices with new currency
-    });
-
-    // Clear portfolio
-    clearPortfolioBtn.addEventListener('click', () => {
-        if (confirm('Apakah Anda yakin ingin menghapus semua koin dari portofolio Anda? Ini tidak dapat dibatalkan.')) {
-            portfolio = [];
-            savePortfolio();
-            renderPortfolio();
-            updateSummary();
-        }
-    });
-
-    // Initial fetch and set up refresh interval
-    document.addEventListener('DOMContentLoaded', () => {
-        setInterval(fetchPricesAndUpdatePortfolio, REFRESH_INTERVAL_MS);
-    });
-  </script>
+/* ================= INIT ================= */
+render();
+fetchPrices();
+startInterval();
+</script>
 
 </body>
 </html>
